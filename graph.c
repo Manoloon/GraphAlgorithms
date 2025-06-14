@@ -41,3 +41,35 @@ graph_t *make_graph_copy(graph_t *from_graph)
     new_graph = from_graph;
     return new_graph; 
 }
+
+node_t *get_Out_neighbors(graph_t *from_graph, node_t *node) 
+{ 
+    if(node == NULL) return NULL;
+    node_t* listNeighbors = malloc(sizeof(node_t)* from_graph->num_nodes);
+    if(listNeighbors == NULL) return NULL;
+
+    for(size_t i = 0; i < from_graph->num_nodes;++i)
+    {
+        listNeighbors[i] = *from_graph->nodes->edges->to_node;
+    } 
+    return listNeighbors;
+}
+
+node_t *get_In_neighbors(graph_t *from_graph, node_t *node) 
+{ 
+    if(node == NULL) return NULL;
+    node_t* listNeighbors = malloc(sizeof(node_t)* from_graph->num_nodes);
+    if(listNeighbors == NULL) return NULL;
+
+    for(size_t i = 0; i < from_graph->num_nodes;++i)
+    {
+        listNeighbors[i] = from_graph->nodes[i];
+    } 
+    return listNeighbors; 
+}
+
+float clustering_coefficient(graph_t *graph, int index) 
+{
+    
+    return 0.0f; 
+}

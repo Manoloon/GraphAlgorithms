@@ -48,7 +48,7 @@ void remove_edge(node_t *target, node_t *to_remove)
     }
 }
 
-edge_t *getSortedEdges(node_t *node) 
+edge_t *get_sorted_edges(node_t *node) 
 { 
     if(!node || node->num_edges == 0) return NULL;
 
@@ -56,6 +56,18 @@ edge_t *getSortedEdges(node_t *node)
     if(!sorted) return NULL;
     memcpy(sorted,node->edges,sizeof(edge_t),edge_compare);
     return sorted; 
+}
+
+node_t *get_neighbors(node_t *node) 
+{ 
+    if(node == NULL) return NULL;
+    node_t* listNeighbors = malloc(sizeof(node_t) * node->num_edges);
+    if(listNeighbors == NULL ) return NULL;
+    for(size_t i = 0; i < node->num_edges;++i)
+    {
+        listNeighbors[i] = *node->edges[i].to_node;
+    }
+    return listNeighbors; 
 }
 
 int edge_compare(const void *a, const void *b) 
