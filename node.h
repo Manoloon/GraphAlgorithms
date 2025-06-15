@@ -4,8 +4,8 @@
 typedef struct node_t
 {
     int index;
-    char* label;
-    edge_t* edges;
+    //char* label;
+    struct edge_t* edges;
     size_t num_edges;
     size_t edge_capacity;
 }node_t;
@@ -17,10 +17,11 @@ typedef struct edge_t
     float weight;
 }edge_t;
 
-size_t getNumEdges(node_t* node);
-edge_t* getEdges(node_t* node);
-void add_edge(node_t* target, node_t* new_node,float weight);
-void remove_edge(node_t* target,node_t* to_remove);
-edge_t* get_sorted_edges(node_t* node);
-node_t* get_neighbors(node_t* node);
+size_t node_get_num_edges(node_t* node);
+edge_t* node_get_edges(node_t* node);
+void node_add_edge(node_t* target, node_t* new_node,float weight);
+void node_remove_edge(node_t* target,node_t* to_remove);
+edge_t* node_get_sorted_edges(node_t* node);
+node_t** node_get_neighbors(node_t* node);
 int edge_compare(const void* a, const void* b);
+void node_destroy(node_t* node);

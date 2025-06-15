@@ -1,4 +1,6 @@
 #include "graph.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 edge_t *get_edges(graph_t *graph, node_t *from_node, node_t *to_node) 
 {
@@ -64,6 +66,7 @@ node_t *get_In_neighbors(graph_t *from_graph, node_t *node)
     for(size_t i = 0; i < from_graph->num_nodes;++i)
     {
         listNeighbors[i] = from_graph->nodes[i];
+        printf("GRAPH : neighbor index %d",listNeighbors[i].index);
     } 
     return listNeighbors; 
 }

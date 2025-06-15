@@ -1,5 +1,7 @@
 #include "graphMatrix.h"
 #include <stdio.h>
+#include <stdlib.h>
+
 
 void set_edge(graphMatrix_t *graphMatrix, node_t *from_node, node_t *to_node, float weight) 
               {
@@ -10,12 +12,12 @@ void set_edge(graphMatrix_t *graphMatrix, node_t *from_node, node_t *to_node, fl
 
                 if(fromIndex < 0 || fromIndex >= graphMatrix->num_nodes)
                 {
-                    printf(stderr,"from node out of bound");
+                    fprintf(stderr,"from node out of bound");
                     return;
                 }
                 if(toIndex < 0 || toIndex >= graphMatrix->num_nodes)
                 {
-                    printf(stderr,"to_node out of bound");
+                    fprintf(stderr,"to_node out of bound");
                     return;
                 }
                 // allocate matrix if not already allocated

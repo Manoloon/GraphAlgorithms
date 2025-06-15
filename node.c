@@ -1,22 +1,25 @@
 #include "node.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
-size_t getNumEdges(node_t *node) 
+size_t node_get_num_edges(node_t *node) 
 { 
     return node ? node->num_edges : 0; 
 }
 
-edge_t *getEdges(node_t *node) 
+edge_t *node_get_edges(node_t *node) 
 { 
     return node ? node->edges : NULL; 
 }
 
-void add_edge(node_t *target, node_t *new_node, float weight) 
+void node_add_edge(node_t *target, node_t *new_node, float weight) 
 {
     if(!target || !new_node) return;
     // expand capacity if needed
     if(target->num_edges >= target->edge_capacity)
     {
-        size_t new_capacity = target->edge_capacity == 0 ? 4 : target->edge_capacity * 2;
+        size_t new_capacity = target->edge_capacity == 0 ? 1 : target->edge_capacity * 2;
         edge_t* new_edges = realloc(target->edges, new_capacity * sizeof(edge_t));
         if(new_edges == NULL) return;
         target->edges = new_edges;
@@ -29,7 +32,7 @@ void add_edge(node_t *target, node_t *new_node, float weight)
     target->edges[target->num_edges++] = new_edge;
 }
 
-void remove_edge(node_t *target, node_t *to_remove) 
+void node_remove_edge(node_t *target, node_t *to_remove) 
 {
     if(!target || !to_remove || target->num_edges == 0) return;
     size_t n = 0;
@@ -48,24 +51,27 @@ void remove_edge(node_t *target, node_t *to_remove)
     }
 }
 
-edge_t *get_sorted_edges(node_t *node) 
+edge_t *node_get_sorted_edges(node_t *node) 
 { 
     if(!node || node->num_edges == 0) return NULL;
 
     edge_t* sorted = malloc(node->num_edges * sizeof(edge_t));
     if(!sorted) return NULL;
-    memcpy(sorted,node->edges,sizeof(edge_t),edge_compare);
+    // TODO Sort the edges
+    memcpy(sorted, node->edges, node->num_edges * sizeof(edge_t));
+    qsort(sorted, node->num_edges, sizeof(edge_t), edge_compare);
     return sorted; 
 }
 
-node_t *get_neighbors(node_t *node) 
+node_t** node_get_neighbors(node_t *node) 
 { 
     if(node == NULL) return NULL;
-    node_t* listNeighbors = malloc(sizeof(node_t) * node->num_edges);
+    node_t** listNeighbors = malloc(sizeof(node_t*) * node->num_edges);
     if(listNeighbors == NULL ) return NULL;
     for(size_t i = 0; i < node->num_edges;++i)
     {
-        listNeighbors[i] = *node->edges[i].to_node;
+        listNeighbors[i] = node->edges[i].to_node;
+        printf("GRAPH : neighbor index %d",listNeighbors[i]->index);
     }
     return listNeighbors; 
 }
@@ -75,4 +81,13 @@ int edge_compare(const void *a, const void *b)
     const edge_t* tempA = (const edge_t*)a;
     const edge_t* tempB = (const edge_t*)b; 
     return (tempA->weight > tempB->weight) - (tempA->weight < tempB->weight); 
+}
+
+void node_destroy(node_t *node) 
+{
+    if(node != NULL)
+    {
+        free(node->edges);
+        free(node);
+    }
 }
