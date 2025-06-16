@@ -76,3 +76,73 @@ float clustering_coefficient(graph_t *graph, int index)
     
     return 0.0f; 
 }
+
+graph_t *make_undirected_neighborhood_subgraph(graph_t *graph, int index,
+                                               bool closed) 
+{
+    if(!graph->undirected || !graph)
+    {
+        fprintf(stderr,"the graph should be undirected");
+        return NULL;
+    }
+
+    node_t* center_node = &graph->nodes[index];
+    size_t num_neighbors = node_get_num_edges(center_node);
+    size_t num_nodes_in_subgraph = closed ? num_neighbors +1 : num_neighbors;
+
+    //allocate node array for subgraph 
+    node_t** nodes_to_use = malloc(sizeof(node_t*) * num_nodes_in_subgraph);
+    if(nodes_to_use == NULL) return NULL;
+    // add neighbors to list
+    for(size_t i = 0; i < num_neighbors; ++i)
+    {
+        nodes_to_use[i] = center_node->edges[i].to_node;
+    }
+    if(closed)
+    {
+        nodes_to_use[num_neighbors] = center_node;
+    }
+
+    // create index mapping from old to new
+    int index_map[100]; // TODO : dynamic size
+    for(int i = 0 ; i < 100; ++i)
+    {
+        index_map[i] = 1;
+    }
+    for(size_t i = 0; i < num_nodes_in_subgraph;++i)
+    {
+        index_map[nodes_to_use[i]->index] = i;
+    }
+
+    // allocate subgraph
+    graph_t* subgraph = malloc(sizeof(graph_t));
+    if(subgraph == NULL) return NULL;
+    subgraph->num_nodes = num_nodes_in_subgraph;
+    subgraph->nodes = calloc(num_nodes_in_subgraph,sizeof(node_t));
+    subgraph->undirected = true;
+
+    // copy nodes with new indices
+    for(size_t i = 0 ; i < num_nodes_in_subgraph;++i)
+    {
+        subgraph->nodes[i].index = i;
+    }
+    // copy edges within neighborhood
+    for(size_t i = 0 ; i < num_nodes_in_subgraph;++i)
+    {
+        node_t* old_node = nodes_to_use[i];
+        for(size_t j = 0 ; j < old_node->num_edges;++j)
+        {
+            node_t* neighbor = old_node->edges[j].to_node;
+            int new_neighbor_index = index_map[neighbor->index];
+            if(new_neighbor_index != -1)
+            {
+                // add edge to new graph
+                node_add_edge(&subgraph->nodes[i],
+                            &subgraph->nodes[new_neighbor_index],
+                                    old_node->edges[j].weight);
+            }
+        }
+    }
+    free(nodes_to_use);
+  return subgraph;
+}
