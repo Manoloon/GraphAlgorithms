@@ -22,6 +22,7 @@ node_t* get_In_neighbors(graph_t *from_graph, node_t* node);
 // Clustering Coefficient metric
 // its a metric that shows how interconnected node's neighbors are with each other.
 float clustering_coefficient(graph_t* graph, int index);
-
+// average local clustering coefficient
+float avg_clustering_coefficient(graph_t* graph);
 // generate an open or closed neighborhood subgraph around a given node ( with index) in an undirected graph
 graph_t* make_undirected_neighborhood_subgraph(graph_t* graph,int index, bool closed);

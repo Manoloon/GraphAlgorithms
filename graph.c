@@ -73,8 +73,46 @@ node_t *get_In_neighbors(graph_t *from_graph, node_t *node)
 
 float clustering_coefficient(graph_t *graph, int index) 
 {
-    
-    return 0.0f; 
+    if(!graph) return 0.0f;
+
+    node_get_neighbors(&graph->nodes[index]);
+    size_t num_edges = graph->nodes[index].num_edges;
+    node_t** neighbors = node_get_neighbors(&graph->nodes[index]);
+
+    int count  = 0;
+    for(int i = 0; i < num_edges;++i)
+    {
+        node_t* ni = neighbors[i];
+        for(int j = 0; j < neighbors[i]->num_edges;++j)
+        {
+            node_t* nj = neighbors[j];
+            //check if ni and nj are connected
+            for(size_t k = 0; k < ni->num_edges;++k)
+            {
+                if(ni->edges[k].to_node == nj)
+                {
+                    count +=1;
+                    break;
+                }
+            }
+        }
+    }
+    free(neighbors);
+    float possible_links = (num_edges * (num_edges -1)) / 2.0f;
+    if(possible_links == 0.0f) return 0.0f;
+    return count / possible_links; 
+}
+
+float avg_clustering_coefficient(graph_t *graph) 
+{
+    if(!graph || graph->num_nodes == 0) return 0.0f;
+    float total = 0.0f;
+    for(int i = 0; i < graph->num_nodes;++i)
+    {
+        total += clustering_coefficient(graph,i);
+    } 
+
+    return total / graph->num_nodes; 
 }
 
 graph_t *make_undirected_neighborhood_subgraph(graph_t *graph, int index,
