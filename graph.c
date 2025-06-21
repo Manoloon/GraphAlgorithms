@@ -50,7 +50,7 @@ node_t *get_Out_neighbors(graph_t *from_graph, node_t *node)
     node_t* listNeighbors = malloc(sizeof(node_t)* from_graph->num_nodes);
     if(listNeighbors == NULL) return NULL;
 
-    for(size_t i = 0; i < from_graph->num_nodes;++i)
+    for(int i = 0; i < from_graph->num_nodes;++i)
     {
         listNeighbors[i] = *from_graph->nodes->edges->to_node;
     } 
@@ -63,7 +63,7 @@ node_t *get_In_neighbors(graph_t *from_graph, node_t *node)
     node_t* listNeighbors = malloc(sizeof(node_t)* from_graph->num_nodes);
     if(listNeighbors == NULL) return NULL;
 
-    for(size_t i = 0; i < from_graph->num_nodes;++i)
+    for(int i = 0; i < from_graph->num_nodes;++i)
     {
         listNeighbors[i] = from_graph->nodes[i];
         printf("GRAPH : neighbor index %d",listNeighbors[i].index);
@@ -76,7 +76,7 @@ float clustering_coefficient(graph_t *graph, int index)
     if(!graph) return 0.0f;
 
     node_get_neighbors(&graph->nodes[index]);
-    size_t num_edges = graph->nodes[index].num_edges;
+    int num_edges = graph->nodes[index].num_edges;
     node_t** neighbors = node_get_neighbors(&graph->nodes[index]);
 
     int count  = 0;
@@ -87,7 +87,7 @@ float clustering_coefficient(graph_t *graph, int index)
         {
             node_t* nj = neighbors[j];
             //check if ni and nj are connected
-            for(size_t k = 0; k < ni->num_edges;++k)
+            for(int k = 0; k < ni->num_edges;++k)
             {
                 if(ni->edges[k].to_node == nj)
                 {
@@ -160,15 +160,15 @@ graph_t *make_undirected_neighborhood_subgraph(graph_t *graph, int index,
     subgraph->undirected = true;
 
     // copy nodes with new indices
-    for(size_t i = 0 ; i < num_nodes_in_subgraph;++i)
+    for(int i = 0 ; i < num_nodes_in_subgraph;++i)
     {
         subgraph->nodes[i].index = i;
     }
     // copy edges within neighborhood
-    for(size_t i = 0 ; i < num_nodes_in_subgraph;++i)
+    for(int i = 0 ; i < num_nodes_in_subgraph;++i)
     {
         node_t* old_node = nodes_to_use[i];
-        for(size_t j = 0 ; j < old_node->num_edges;++j)
+        for(int j = 0 ; j < old_node->num_edges;++j)
         {
             node_t* neighbor = old_node->edges[j].to_node;
             int new_neighbor_index = index_map[neighbor->index];
@@ -183,4 +183,46 @@ graph_t *make_undirected_neighborhood_subgraph(graph_t *graph, int index,
     }
     free(nodes_to_use);
   return subgraph;
+}
+
+bool check_node_path_valid(graph_t *graph, path_t* path) 
+{ 
+    if(graph == NULL || path == NULL) return false;
+    
+    int num_node_on_path = path->num_nodes;
+    if(num_node_on_path == 0) return true;
+    
+    node_t* prev_node = &path->nodes[0];
+    if(prev_node->index < 0 || prev_node->index >= graph->num_nodes) return false;
+
+    for(int i = 0; i < num_node_on_path; ++i)
+    {
+        node_t* next_node = &path->nodes[i];
+        if(!is_edge(prev_node,next_node)) return false;
+        prev_node = next_node;
+    }
+    return true; 
+}
+
+bool check_edge_path_valid(graph_t *graph, path_t* path) 
+{ 
+    if(graph == NULL || path == NULL) return false;
+    if(path->num_nodes == 0) return true;
+
+    node_t* prev_node = &path->nodes[0];
+    if(prev_node->index < 0 || prev_node->index >= graph->num_nodes) return false;
+    
+    for(int i = 0 ; i < path->num_nodes;++i)
+    {
+        for(int j = 0; j < path->nodes[i].num_edges;++j)
+        {
+            edge_t* edge = &path->nodes[i].edges[j];
+            if(path->nodes[i].edges[j].from_node != prev_node) return false;
+            node_t* next_node = edge->to_node;
+            if(!is_edge(prev_node,next_node)) return false;
+
+            prev_node = next_node;
+        }
+    }
+    return true; 
 }

@@ -6,7 +6,7 @@ typedef struct node_t
     int index;
     //char* label;
     struct edge_t* edges;
-    size_t num_edges;
+    int num_edges;
     size_t edge_capacity;
 }node_t;
 

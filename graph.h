@@ -9,6 +9,12 @@ typedef struct graph_t
     bool undirected;
 }graph_t;
 
+typedef struct path_t
+{
+    node_t* nodes;
+    int num_nodes;
+}path_t;
+
 edge_t* get_edges(graph_t* graph,node_t* from_node,node_t* to_node);
 bool is_edge(node_t* from_node, node_t* to_node);
 edge_t* make_edgeList(graph_t* graph);
@@ -26,3 +32,7 @@ float clustering_coefficient(graph_t* graph, int index);
 float avg_clustering_coefficient(graph_t* graph);
 // generate an open or closed neighborhood subgraph around a given node ( with index) in an undirected graph
 graph_t* make_undirected_neighborhood_subgraph(graph_t* graph,int index, bool closed);
+
+// Paths
+bool check_node_path_valid(graph_t* graph, path_t* path);
+bool check_edge_path_valid(graph_t* graph, path_t* path);
