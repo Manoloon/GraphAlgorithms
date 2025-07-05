@@ -4,7 +4,7 @@
 
 
 void set_edge(graphMatrix_t *graphMatrix, node_t *from_node, node_t *to_node, float weight) 
-              {
+{
                 if(!graphMatrix || !from_node || !to_node) return;
 
                 int fromIndex = from_node->index;
@@ -46,4 +46,9 @@ void set_edge(graphMatrix_t *graphMatrix, node_t *from_node, node_t *to_node, fl
                     mirror_edge->weight = weight;
                     graphMatrix->connections[toIndex][fromIndex] = mirror_edge;
                 }
-              }
+}
+
+float calc_path_cost(graphMatrix_t *graphMatrix) 
+    { 
+        return 0.0f; 
+    }
