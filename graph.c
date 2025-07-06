@@ -203,26 +203,3 @@ bool check_node_path_valid(graph_t *graph, path_t* path)
     }
     return true; 
 }
-
-bool check_edge_path_valid(graph_t *graph, path_t* path) 
-{ 
-    if(graph == NULL || path == NULL) return false;
-    if(path->num_nodes == 0) return true;
-
-    node_t* prev_node = &path->nodes[0];
-    if(prev_node->index < 0 || prev_node->index >= graph->num_nodes) return false;
-    
-    for(int i = 0 ; i < path->num_nodes;++i)
-    {
-        for(int j = 0; j < path->nodes[i].num_edges;++j)
-        {
-            edge_t* edge = &path->nodes[i].edges[j];
-            if(path->nodes[i].edges[j].from_node != prev_node) return false;
-            node_t* next_node = edge->to_node;
-            if(!is_edge(prev_node,next_node)) return false;
-
-            prev_node = next_node;
-        }
-    }
-    return true; 
-}

@@ -35,4 +35,3 @@ graph_t* make_undirected_neighborhood_subgraph(graph_t* graph,int index, bool cl
 
 // Paths
 bool check_node_path_valid(graph_t* graph, path_t* path);
-bool check_edge_path_valid(graph_t* graph, path_t* path);
