@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-void set_edge(graphMatrix_t *graphMatrix, node_t *from_node, node_t *to_node, float weight) 
+void graphMatrix_set_edge(graphMatrix_t *graphMatrix, node_t *from_node, node_t *to_node, float weight) 
 {
                 if(!graphMatrix || !from_node || !to_node) return;
 
@@ -48,7 +48,14 @@ void set_edge(graphMatrix_t *graphMatrix, node_t *from_node, node_t *to_node, fl
                 }
 }
 
-float calc_path_cost(graphMatrix_t *graphMatrix) 
-    { 
-        return 0.0f; 
-    }
+float graphMatrix_calc_path_cost(graphMatrix_t *graphMatrix) 
+{ 
+    
+    return 0.0f; 
+}
+
+graphMatrix_t *graphMatrix_copy(graphMatrix_t *graphMatrix) 
+{ 
+    
+    return NULL; 
+}

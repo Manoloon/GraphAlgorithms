@@ -9,6 +9,6 @@ typedef struct graphMatrix_t
     bool undirected;
 }graphMatrix_t;
 
-void set_edge(graphMatrix_t* graphMatrix,node_t* from_node,node_t* to_node,float weight);
-float calc_path_cost(graphMatrix_t* graphMatrix);
+void graphMatrix_set_edge(graphMatrix_t* graphMatrix,node_t* from_node,node_t* to_node,float weight);
+float graphMatrix_calc_path_cost(graphMatrix_t* graphMatrix);
 graphMatrix_t* graphMatrix_copy(graphMatrix_t* graphMatrix);
