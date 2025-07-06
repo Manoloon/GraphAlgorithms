@@ -21,5 +21,10 @@ int main()
 
     node_destroy(new_node1);
     node_destroy(new_node2);
+    // graph matrix
+    graphMatrix_t gMatrix;
+    graphMatrix_init(&gMatrix,13,true);
+    graphMatrix_draw(&gMatrix);
+    graphMatrix_destroy(&gMatrix);
     return 0;
 }

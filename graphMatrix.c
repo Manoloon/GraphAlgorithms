@@ -2,11 +2,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void init(graphMatrix_t *graphMatrix,int num_nodes,bool undirected) 
+void graphMatrix_init(graphMatrix_t *graphMatrix,int num_nodes,bool undirected) 
 {
-    graphMatrix->num_nodes = num_nodes;
-    graphMatrix->undirected = undirected;
-    // connections are [[0.0] * num_nodes, num_nodes];
+  graphMatrix->num_nodes = num_nodes;
+  graphMatrix->undirected = undirected;
+  graphMatrix->connections = malloc(num_nodes * sizeof(float*));
+  if(graphMatrix->connections == NULL)
+  {
+    fprintf(stderr,"graph Matrix : init : failed to allocate\n");
+    exit(EXIT_FAILURE);
+  }
+  for(int i = 0; i < num_nodes;++i)
+  {
+    graphMatrix->connections[i] = calloc(num_nodes,sizeof(float));
+    if(graphMatrix->connections[i] == NULL)
+    {
+      fprintf(stderr,"init : failed to allocate rows\n");
+      //clean
+      for(int j = 0; j < i; ++j)
+      {
+        free(graphMatrix->connections[j]);
+      }
+      free(graphMatrix->connections);
+      exit(EXIT_FAILURE);
+    }
+  }
+}
+
+void graphMatrix_destroy(graphMatrix_t *graphMatrix) 
+{
+  for(int i = 0; i < graphMatrix->num_nodes;++i)
+  {
+    free(graphMatrix->connections[i]);
+  }
+  free(graphMatrix->connections);
 }
 
 void graphMatrix_set_edge(graphMatrix_t *graphMatrix, node_t *from_node,
@@ -62,4 +91,25 @@ graphMatrix_t *graphMatrix_copy(graphMatrix_t *graphMatrix)
 { 
     
     return NULL; 
+}
+
+void graphMatrix_draw(graphMatrix_t *graphMatrix) 
+{
+    int n = graphMatrix->num_nodes;
+
+    printf("Adjacency Matrix (%d nodes):\n    ", n);
+    for (int i = 0; i < n; ++i)
+        printf("%3d", i);
+    printf("\n   ");
+    for (int i = 0; i < n; ++i)
+        printf("----");
+    printf("\n");
+
+    for (int i = 0; i < n; ++i) {
+        printf("%2d |", i);
+        for (int j = 0; j < n; ++j) {
+            printf("%3.0f", graphMatrix->connections[i][j]);
+        }
+        printf("\n");
+    }
 }
