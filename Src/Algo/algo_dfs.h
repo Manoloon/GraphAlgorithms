@@ -1,10 +1,10 @@
 #pragma once
 
 /*
-Depth Breadth First Algorithm
+Depth First Search Algorithm (LIFO)
 */
-#include "node.h"
-#include "graph.h"
+#include "Src/node.h"
+#include "Src/graph.h"
 
 void dfs_recursive_basic(graph_t* graph,int index,bool* seen);
 // API

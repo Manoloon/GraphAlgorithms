@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "node.h"
-#include "graph.h"
-#include "graphMatrix.h"
+#include "Src/node.h"
+#include "Src/graph.h"
+#include "Src/graphMatrix.h"
 
 // int argc,char* argv[]
 int main() 

@@ -4,7 +4,7 @@
 typedef struct node_t
 {
     int index;
-    //char* label;
+    int data;
     struct edge_t* edges;
     int num_edges;
     size_t edge_capacity;
