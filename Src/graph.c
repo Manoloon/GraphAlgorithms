@@ -2,33 +2,33 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-edge_t *get_edges(graph_t *graph, node_t *from_node, node_t *to_node) 
+edge_t *graph_get_edges(graph_t *graph, node_t *from_node, node_t *to_node) 
 {
   return graph->nodes->edges;
 }
 
-bool is_edge(node_t *from_node, node_t *to_node) 
+bool graph_is_edge(node_t *from_node, node_t *to_node) 
 { 
     return from_node->edges->to_node == to_node; 
 }
-
-edge_t *make_edgeList(graph_t *graph) 
+// TODO 
+edge_t *graph_make_edgeList(graph_t *graph) 
 { 
     return NULL; 
 }
-
-void insert_edge(graph_t *graph, node_t *from_node, node_t *to_node,
+// TODO 
+void graph_insert_edge(graph_t *graph, node_t *from_node, node_t *to_node,
                  float weight) 
                  {
 
                  }
-
-void add_edge(graph_t *graph, node_t *to_node, float weight) 
+// TODO 
+void graph_add_edge(graph_t *graph, node_t *to_node, float weight) 
 {
 
 }
 
-void remove_edge(graph_t *graph, node_t *to_node) 
+void graph_remove_edge(graph_t *graph, node_t *to_node) 
 {
     if(graph->nodes->edges->to_node == to_node)
     {
@@ -36,7 +36,7 @@ void remove_edge(graph_t *graph, node_t *to_node)
     }
 }
 
-graph_t *make_graph_copy(graph_t *from_graph) 
+graph_t *graph_make_copy(graph_t *from_graph) 
 { 
     graph_t* new_graph = malloc(sizeof(from_graph));
     if(new_graph == NULL) return NULL;
@@ -44,7 +44,7 @@ graph_t *make_graph_copy(graph_t *from_graph)
     return new_graph; 
 }
 
-node_t *get_Out_neighbors(graph_t *from_graph, node_t *node) 
+node_t *graph_get_Out_neighbors(graph_t *from_graph, node_t *node) 
 { 
     if(node == NULL) return NULL;
     node_t* listNeighbors = malloc(sizeof(node_t)* from_graph->num_nodes);
@@ -57,7 +57,7 @@ node_t *get_Out_neighbors(graph_t *from_graph, node_t *node)
     return listNeighbors;
 }
 
-node_t *get_In_neighbors(graph_t *from_graph, node_t *node) 
+node_t *graph_get_In_neighbors(graph_t *from_graph, node_t *node) 
 { 
     if(node == NULL) return NULL;
     node_t* listNeighbors = malloc(sizeof(node_t)* from_graph->num_nodes);
@@ -71,7 +71,7 @@ node_t *get_In_neighbors(graph_t *from_graph, node_t *node)
     return listNeighbors; 
 }
 
-float clustering_coefficient(graph_t *graph, int index) 
+float graph_clustering_coefficient(graph_t *graph, int index) 
 {
     if(!graph) return 0.0f;
 
@@ -109,13 +109,13 @@ float avg_clustering_coefficient(graph_t *graph)
     float total = 0.0f;
     for(int i = 0; i < graph->num_nodes;++i)
     {
-        total += clustering_coefficient(graph,i);
+        total += graph_clustering_coefficient(graph,i);
     } 
 
     return total / graph->num_nodes; 
 }
 
-graph_t *make_undirected_neighborhood_subgraph(graph_t *graph, int index,
+graph_t *graph_undirected_neighborhood_subgraph(graph_t *graph, int index,
                                                bool closed) 
 {
     if(!graph->undirected || !graph)
@@ -185,7 +185,17 @@ graph_t *make_undirected_neighborhood_subgraph(graph_t *graph, int index,
   return subgraph;
 }
 
-bool check_node_path_valid(graph_t *graph, path_t* path) 
+void graph_draw_grid(graph_t* graph, int width, int height) 
+{ 
+ 
+}
+
+void graph_draw_grid_obstacles(graph_t* graph,int width, int height, int *obstacles) 
+{
+  
+}
+
+bool graph_check_node_path_valid(graph_t *graph, path_t* path) 
 { 
     if(graph == NULL || path == NULL) return false;
     
@@ -198,7 +208,7 @@ bool check_node_path_valid(graph_t *graph, path_t* path)
     for(int i = 0; i < num_node_on_path; ++i)
     {
         node_t* next_node = &path->nodes[i];
-        if(!is_edge(prev_node,next_node)) return false;
+        if(!graph_is_edge(prev_node,next_node)) return false;
         prev_node = next_node;
     }
     return true; 

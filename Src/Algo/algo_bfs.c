@@ -24,11 +24,12 @@ int *bfs(graph_t *graph, int start)
         last[i] = -1;
     }
     queue_t* pending = create_queue();
-    pending.put(start);
+    queue_push(pending,start);
     seen[start] = true;
     while(queue_is_empty(pending) == false)
     {
-        int index = pending.get();
+        int index = queue_pop(pending);
+        
         node_t* current = &graph->nodes[index];
         edge_t* curr_edges = node_get_edges(current);
         int num_edges = node_get_num_edges(current);
@@ -37,7 +38,7 @@ int *bfs(graph_t *graph, int start)
             int neighbor = curr_edges[i].to_node;
             if(seen[neighbor] == false)
             {
-                pending.put(neighbor);
+                queue_push(pending,neighbor);
                 seen[neighbor] = true;
                 last[neighbor] = i;
             }

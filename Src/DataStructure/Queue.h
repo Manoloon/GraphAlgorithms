@@ -1,65 +1,97 @@
 #pragma once
 #include <stdlib.h>
 #include<stdio.h>
+#include <stdbool.h>
 #include "Src/node.h"
 /*
     Simple Queue (FIFO)
 */
-
+#define INITIAL_CAPACITY 100
 typedef struct queue_t
 {
-    node_t* front;
-    node_t* back;
+    int* data;
+    int front;
+    int back;
+    int size;
+    int capacity;
 }queue_t;
 
 queue_t* create_queue()
 {
     queue_t* q = (queue_t*)malloc(sizeof(queue_t));
-    q->front = NULL;
-    q->back = NULL;
+    // TODO : check if null
+    q->capacity = INITIAL_CAPACITY;
+    q->data = malloc(sizeof(int)*INITIAL_CAPACITY);
+    // TODO : check if null
+    // free q;
+
+    q->front = 0;
+    q->back = 0;
+    q->size = 0;
     return q;
 }
 
 bool queue_is_empty(queue_t* q)
 {
-    return q->front == NULL;
+    return q->size == 0;
 }
 
-void enqueue(queue_t* q, int val)
+void queue_push(queue_t* q, int val)
 {
-    node_t* node = (node_t*)malloc(sizeof(node_t));
-    node->data = val;
-    node->next = NULL;
+    if(q->size == q->capacity)
+    {
+        q->capacity *=2;
+        int* new_data =(int*)realloc(q->data,sizeof(int) * q->capacity);
+        if(new_data == NULL)
+        {
+            perror("queue_push : realloc failed");
+            exit(EXIT_FAILURE);
+        }
+        if(q->front > q->back)
+        {
+            for(int i = 0; i < q->back;++i)
+            {
+                new_data[i+q->size] = new_data[i];
+            }
+            q->back = q->size;
+        }
+        q->data = new_data;
+    }
+    q->data[q->back] = val;
+    q->back = (q->back + 1) % q->capacity;
+    q->size++;
+}
+
+int queue_pop(queue_t* q)
+{
+    if(queue_is_empty(q)) 
+    {
+        fprintf(stderr,"queue_pop : queue is empty");
+        exit(EXIT_FAILURE);
+    }
+    int value = q->data[q->front];
+    q->front = (q->front +1) % q->capacity;
+    q->size--;
+    return value;
+}
+
+int queue_peek(queue_t* q)
+{
     if(queue_is_empty(q))
     {
-        q->back = node;
-        q->front = node;
+        fprintf(stderr,"queue_peek : queue is empty");
+        exit(EXIT_FAILURE);
     }
-    else
-    {
-        q->back->next = node;
-        q->back = node;
-    }
+    return q->front;
 }
 
-int q_dequeue(queue_t* q)
+void queue_destroy(queue_t* q)
 {
-    if(is_empty(q)) return -1;
-    node_t* temp = q->front;
-    int result = temp->data;
-    q->front = q->front->next;
-    if(is_empty(q))
+    if(q != NULL)
     {
-        q->back = NULL;
+        free(q->data);
+        free(q);
     }
-    free(temp);
-    return result;
-}
-
-int q_peek(queue_t* q)
-{
-    if(is_empty(q)) return -1;
-    return q->front->data;
 }
 
 void queue_test()
@@ -67,21 +99,21 @@ void queue_test()
     printf("Start Queue Test\n");
     queue_t* q = create_queue();
 
-    enqueue(q, 10);
-    enqueue(q, 20);
-    enqueue(q, 30);
+    queue_push(q, 10);
+    queue_push(q, 20);
+    queue_push(q, 30);
 
-    printf("Queue : Front: %d\n", peek(q)); // 10
+    printf("Queue : Front: %d\n", queue_peek(q)); // 10
 
-    printf("Queue : Dequeued: %d\n", dequeue(q)); // 10
-    printf("Queue : Dequeued: %d\n", dequeue(q)); // 20
+    printf("Queue : Dequeued: %d\n", queue_pop(q)); // 10
+    printf("Queue : Dequeued: %d\n", queue_pop(q)); // 20
 
-    enqueue(q, 40);
+    queue_push(q, 40);
 
-    printf("Queue : Front: %d\n", peek(q)); // 30
+    printf("Queue : Front: %d\n", queue_peek(q)); // 30
 
-    while (!is_empty(q)) {
-        printf("Queue : Dequeued: %d\n", dequeue(q));
+    while (!queue_is_empty(q)) {
+        printf("Queue : Dequeued: %d\n", queue_pop(q));
     }
     free(q);
 }

@@ -15,23 +15,26 @@ typedef struct path_t
     int num_nodes;
 }path_t;
 
-edge_t* get_edges(graph_t* graph,node_t* from_node,node_t* to_node);
-bool is_edge(node_t* from_node, node_t* to_node);
-edge_t* make_edgeList(graph_t* graph);
-void insert_edge(graph_t* graph, node_t* from_node, node_t* to_node,float weight);
-void add_edge(graph_t* graph, node_t* to_node,float weight);
-void remove_edge(graph_t* graph, node_t* to_node);
-graph_t* make_graph_copy(graph_t* from_graph);
+edge_t* graph_get_edges(graph_t* graph,node_t* from_node,node_t* to_node);
+bool graph_is_edge(node_t* from_node, node_t* to_node);
+edge_t* graph_make_edgeList(graph_t* graph);
+void graph_insert_edge(graph_t* graph, node_t* from_node, node_t* to_node,float weight);
+void graph_add_edge(graph_t* graph, node_t* to_node,float weight);
+void graph_remove_edge(graph_t* graph, node_t* to_node);
+graph_t* graph_make_copy(graph_t* from_graph);
 
-node_t* get_Out_neighbors(graph_t *from_graph, node_t* node);
-node_t* get_In_neighbors(graph_t *from_graph, node_t* node);
+node_t* graph_get_Out_neighbors(graph_t *from_graph, node_t* node);
+node_t* graph_get_In_neighbors(graph_t *from_graph, node_t* node);
 // Clustering Coefficient metric
 // its a metric that shows how interconnected node's neighbors are with each other.
-float clustering_coefficient(graph_t* graph, int index);
+float graph_clustering_coefficient(graph_t* graph, int index);
 // average local clustering coefficient
 float avg_clustering_coefficient(graph_t* graph);
-// generate an open or closed neighborhood subgraph around a given node ( with index) in an undirected graph
-graph_t* make_undirected_neighborhood_subgraph(graph_t* graph,int index, bool closed);
 
+// generate an open or closed neighborhood subgraph around a given node ( with index) in an undirected graph
+graph_t* graph_undirected_neighborhood_subgraph(graph_t* graph,int index, bool closed);
+// make a grid
+void graph_draw_grid(graph_t* graph,int width,int height);
+void graph_draw_grid_obstacles(graph_t* graph,int width,int height,int* obstacles);
 // Paths
-bool check_node_path_valid(graph_t* graph, path_t* path);
+bool graph_check_node_path_valid(graph_t* graph, path_t* path);
