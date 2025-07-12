@@ -14,12 +14,13 @@ typedef struct path_t
     node_t* nodes;
     int num_nodes;
 }path_t;
-
-edge_t* graph_get_edges(graph_t* graph,node_t* from_node,node_t* to_node);
+// find the edge with the index from and to node
+edge_t* graph_get_edge(graph_t* graph,int from_node,int to_node);
+//
 bool graph_is_edge(node_t* from_node, node_t* to_node);
 edge_t* graph_make_edgeList(graph_t* graph);
-void graph_insert_edge(graph_t* graph, node_t* from_node, node_t* to_node,float weight);
-void graph_add_edge(graph_t* graph, node_t* to_node,float weight);
+void graph_insert_edge(graph_t* graph, int from_node, int to_node,float weight);
+void graph_remove_edge_byIndex(graph_t* graph,int from_node, int to_node);
 void graph_remove_edge(graph_t* graph,node_t* from_node, node_t* to_node);
 graph_t* graph_make_copy(graph_t* from_graph);
 
@@ -35,6 +36,6 @@ float avg_clustering_coefficient(graph_t* graph);
 graph_t* graph_undirected_neighborhood_subgraph(graph_t* graph,int index, bool closed);
 // make a grid
 void graph_draw_grid(graph_t* graph,int width,int height);
-void graph_draw_grid_obstacles(graph_t* graph,int width,int height,int* obstacles);
+void graph_draw_grid_obstacles(graph_t* graph,int width,int height,int** obstacles);
 // Paths
 bool graph_check_node_path_valid(graph_t* graph, path_t* path);

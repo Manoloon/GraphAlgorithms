@@ -7,6 +7,15 @@ size_t node_get_num_edges(node_t *node)
 { 
     return node ? node->num_edges : 0; 
 }
+//TODO
+edge_t *node_get_edge(node_t *from_node, int neighbor) 
+{ 
+    if(&from_node->edges[neighbor] != NULL)
+    {
+        return &from_node->edges[neighbor];
+    }
+    return NULL; 
+}
 
 edge_t *node_get_edges(node_t *node) 
 { 

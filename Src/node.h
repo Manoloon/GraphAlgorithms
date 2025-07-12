@@ -18,6 +18,7 @@ typedef struct edge_t
 }edge_t;
 
 size_t node_get_num_edges(node_t* node);
+edge_t* node_get_edge(node_t* from_node,int neighbor);
 edge_t* node_get_edges(node_t* node);
 void node_add_edge(node_t* target, node_t* new_node,float weight);
 void node_remove_edge(node_t* target,node_t* to_remove);

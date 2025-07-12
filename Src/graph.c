@@ -2,9 +2,20 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-edge_t *graph_get_edges(graph_t *graph, node_t *from_node, node_t *to_node) 
+edge_t *graph_get_edge(graph_t *graph, int from_node, int to_node) 
 {
-  return graph->nodes->edges;
+    if(from_node < 0 || from_node >= graph->num_nodes)
+    {
+        fprintf(stderr,"graph_get_edge : from_node out of bound\n");
+        exit(EXIT_FAILURE);
+    }
+    if(to_node < 0 || to_node >= graph->num_nodes)
+    {
+        fprintf(stderr,"graph_get_edge : to_node out of bound\n");
+        exit(EXIT_FAILURE);
+    }
+
+    return node_get_edge(&graph->nodes[from_node],to_node);
 }
 
 bool graph_is_edge(node_t *from_node, node_t *to_node) 
@@ -40,16 +51,42 @@ edge_t *graph_make_edgeList(graph_t *graph)
     return all_edges; 
 }
 
-// TODO 
-void graph_insert_edge(graph_t *graph, node_t *from_node, node_t *to_node,float weight) 
+void graph_insert_edge(graph_t *graph, int from_node, int to_node,float weight) 
 {
-    
+    if(from_node < 0 || from_node >= graph->num_nodes)
+    {
+        fprintf(stderr,"graph_insert_edge : from_node out of bound\n");
+        exit(EXIT_FAILURE);
+    }
+    if(to_node < 0 || to_node >= graph->num_nodes)
+    {
+        fprintf(stderr,"graph_insert_edge : to_node out of bound\n");
+        exit(EXIT_FAILURE);
+    }
+    node_add_edge(&graph->nodes[from_node],&graph->nodes[to_node],weight);
+    if(graph->undirected)
+    {
+        node_add_edge(&graph->nodes[to_node],&graph->nodes[from_node],weight);
+    }
 }
 
-// TODO falta a que node se pega
-void graph_add_edge(graph_t *graph, node_t *to_node, float weight) 
+void graph_remove_edge_byIndex(graph_t *graph, int from_node, int to_node) 
 {
-
+    if(from_node < 0 || from_node >= graph->num_nodes)
+    {
+        fprintf(stderr,"graph_remove_edge_byIndex : from_node out of bound\n");
+        exit(EXIT_FAILURE);
+    }
+    if(to_node < 0 || to_node >= graph->num_nodes)
+    {
+        fprintf(stderr,"graph_remove_edge_byIndex : to_node out of bound\n");
+        exit(EXIT_FAILURE);
+    }
+    node_remove_edge(&graph->nodes[from_node],&graph->nodes[to_node]);
+    if(graph->undirected)
+    {
+        node_remove_edge(&graph->nodes[to_node],&graph->nodes[from_node]);
+    }
 }
 
 void graph_remove_edge(graph_t *graph,node_t* from_node, node_t *to_node) 
@@ -74,7 +111,7 @@ void graph_remove_edge(graph_t *graph,node_t* from_node, node_t *to_node)
 
 graph_t *graph_make_copy(graph_t *from_graph) 
 { 
-    graph_t* new_graph = malloc(sizeof(from_graph));
+    graph_t* new_graph = malloc(sizeof(*from_graph));
     if(new_graph == NULL) return NULL;
     new_graph = from_graph;
     return new_graph; 
@@ -196,12 +233,12 @@ graph_t *graph_undirected_neighborhood_subgraph(graph_t *graph, int index,
     subgraph->undirected = true;
 
     // copy nodes with new indices
-    for(int i = 0 ; i < num_nodes_in_subgraph;++i)
+    for(size_t i = 0 ; i < num_nodes_in_subgraph;++i)
     {
         subgraph->nodes[i].index = i;
     }
     // copy edges within neighborhood
-    for(int i = 0 ; i < num_nodes_in_subgraph;++i)
+    for(size_t i = 0 ; i < num_nodes_in_subgraph;++i)
     {
         node_t* old_node = nodes_to_use[i];
         for(int j = 0 ; j < old_node->num_edges;++j)
@@ -223,12 +260,35 @@ graph_t *graph_undirected_neighborhood_subgraph(graph_t *graph, int index,
 
 void graph_draw_grid(graph_t* graph, int width, int height) 
 { 
- 
+    for(int r = 0; r < height;++r)
+    {
+        for(int c = 0; c < width;++c)
+        {
+            int index = r * width + c;
+            if(c < width -1 )
+                graph_insert_edge(graph,index,index+1,1.0);
+            if(r < height -1)
+                graph_insert_edge(graph,index,index+1,1.0);
+        }
+    }
 }
 
-void graph_draw_grid_obstacles(graph_t* graph,int width, int height, int *obstacles) 
+void graph_draw_grid_obstacles(graph_t* graph,int width, int height, int **obstacles) 
 {
-  
+    for(int r = 0; r < height;++r)
+    {
+        for(int c = 0; c < width;++c)
+        {
+            if(obstacles[r][c] == 0)
+            {
+                int index = r * width + c;
+                if(c < width -1 && obstacles[r][c+1] == 0)
+                    graph_insert_edge(graph,index,index+1,1.0);
+                if(r < height -1 && obstacles[r+1][c] == 0)
+                    graph_insert_edge(graph,index,index+1,1.0);
+            }
+        }
+    }
 }
 
 bool graph_check_node_path_valid(graph_t *graph, path_t* path) 
