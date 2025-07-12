@@ -11,28 +11,64 @@ bool graph_is_edge(node_t *from_node, node_t *to_node)
 { 
     return from_node->edges->to_node == to_node; 
 }
-// TODO 
+
 edge_t *graph_make_edgeList(graph_t *graph) 
 { 
-    return NULL; 
+    int num_nodes = graph->num_nodes;
+    if(num_nodes < 1) return NULL;
+    int num_edges = 0;
+    for(int i = 0; i < num_nodes;++i)
+    {
+        num_edges += graph->nodes[i].num_edges;
+    }
+    edge_t* all_edges =malloc(sizeof(edge_t)*num_edges);
+    if(all_edges == NULL)
+    {
+        fprintf(stderr,"graph_make_list : failed to allocate\n");
+        exit(EXIT_FAILURE);
+    }
+  
+    // Copy all edges into the new array
+    int k = 0; // Index in all_edges
+    for (int i = 0; i < num_nodes; ++i) 
+    {
+        for (int j = 0; j < graph->nodes[i].num_edges; ++j) 
+        {
+            all_edges[k++] = graph->nodes[i].edges[j];
+        }
+    }
+    return all_edges; 
 }
-// TODO 
-void graph_insert_edge(graph_t *graph, node_t *from_node, node_t *to_node,
-                 float weight) 
-                 {
 
-                 }
 // TODO 
+void graph_insert_edge(graph_t *graph, node_t *from_node, node_t *to_node,float weight) 
+{
+    
+}
+
+// TODO falta a que node se pega
 void graph_add_edge(graph_t *graph, node_t *to_node, float weight) 
 {
 
 }
 
-void graph_remove_edge(graph_t *graph, node_t *to_node) 
+void graph_remove_edge(graph_t *graph,node_t* from_node, node_t *to_node) 
 {
-    if(graph->nodes->edges->to_node == to_node)
+     for (int i = 0; i < graph->num_nodes; ++i) 
     {
-        graph->nodes->edges->to_node == NULL;
+        if (&graph->nodes[i] == from_node) 
+        {
+            // Remove the edge from 'from_node' to 'to_node'
+            node_remove_edge(from_node, to_node);
+
+            // If the graph is undirected, remove the reverse edge too
+            if (graph->undirected) 
+            {
+                node_remove_edge(to_node, from_node);
+            }
+
+            break; // Edge removed, no need to continue looping
+        }
     }
 }
 

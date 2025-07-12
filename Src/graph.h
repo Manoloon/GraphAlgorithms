@@ -20,7 +20,7 @@ bool graph_is_edge(node_t* from_node, node_t* to_node);
 edge_t* graph_make_edgeList(graph_t* graph);
 void graph_insert_edge(graph_t* graph, node_t* from_node, node_t* to_node,float weight);
 void graph_add_edge(graph_t* graph, node_t* to_node,float weight);
-void graph_remove_edge(graph_t* graph, node_t* to_node);
+void graph_remove_edge(graph_t* graph,node_t* from_node, node_t* to_node);
 graph_t* graph_make_copy(graph_t* from_graph);
 
 node_t* graph_get_Out_neighbors(graph_t *from_graph, node_t* node);
