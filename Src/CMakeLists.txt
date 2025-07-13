@@ -1,4 +1,5 @@
 add_subdirectory(Algo)
+add_subdirectory(DataStructure)
 
 set(SRC_SOURCES
      ${CMAKE_CURRENT_SOURCE_DIR}/node.c

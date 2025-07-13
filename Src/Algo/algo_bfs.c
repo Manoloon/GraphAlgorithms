@@ -23,7 +23,7 @@ int *bfs(graph_t *graph, int start)
     {
         last[i] = -1;
     }
-    queue_t* pending = create_queue();
+    queue_t* pending = queue_create_fixed();
     queue_push(pending,start);
     seen[start] = true;
     while(queue_is_empty(pending) == false)

@@ -1,6 +1,11 @@
 {
     "C_Cpp.default.compilerPath": "C:/Coding/mingw64/mingw64/bin/g++.exe",
     "files.associations": {
-        "graph.h": "c"
+        "graph.h": "c",
+        "stddef.h": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "span": "c"
     }
 }

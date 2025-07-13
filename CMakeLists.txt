@@ -10,10 +10,11 @@ set(SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Src")
 add_subdirectory(Src)
 
 # Create the executable with main.c and src's sources
-add_executable(GraphAlgorithm main.c ${SRC_SOURCES} ${ALGO_SOURCES})
+add_executable(GraphAlgorithm main.c ${SRC_SOURCES} ${ALGO_SOURCES} ${DS_SOURCES})
 
 # Add include directories
 target_include_directories(GraphAlgorithm PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Algo
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/DataStructure
 )
