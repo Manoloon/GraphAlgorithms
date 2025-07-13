@@ -14,6 +14,7 @@ typedef struct path_t
     node_t* nodes;
     int num_nodes;
 }path_t;
+
 // find the edge with the index from and to node
 edge_t* graph_get_edge(graph_t* graph,int from_node,int to_node);
 //

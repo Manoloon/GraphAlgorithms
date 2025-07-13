@@ -1,5 +1,6 @@
 #include "node.h"
 #include <stdlib.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -10,11 +11,11 @@ size_t node_get_num_edges(node_t *node)
 //TODO
 edge_t *node_get_edge(node_t *from_node, int neighbor) 
 { 
-    if(&from_node->edges[neighbor] != NULL)
+    if(neighbor < 0 || neighbor >= (int)from_node->num_edges)
     {
-        return &from_node->edges[neighbor];
+        return NULL; 
     }
-    return NULL; 
+    return &from_node->edges[neighbor];
 }
 
 edge_t *node_get_edges(node_t *node) 
@@ -26,7 +27,7 @@ void node_add_edge(node_t *target, node_t *new_node, float weight)
 {
     if(!target || !new_node) return;
     // expand capacity if needed
-    if(target->num_edges >= target->edge_capacity)
+    if(target->num_edges >= (int)target->edge_capacity)
     {
         size_t new_capacity = target->edge_capacity == 0 ? 1 : target->edge_capacity * 2;
         edge_t* new_edges = realloc(target->edges, new_capacity * sizeof(edge_t));
@@ -44,7 +45,7 @@ void node_add_edge(node_t *target, node_t *new_node, float weight)
 void node_remove_edge(node_t *target, node_t *to_remove) 
 {
     if(!target || !to_remove || target->num_edges == 0) return;
-    size_t n = 0;
+    int n = 0;
     while (n < target->num_edges)
     {
         if(target->edges[n].to_node == to_remove)
@@ -77,7 +78,7 @@ node_t** node_get_neighbors(node_t *node)
     if(node == NULL) return NULL;
     node_t** listNeighbors = malloc(sizeof(node_t*) * node->num_edges);
     if(listNeighbors == NULL ) return NULL;
-    for(size_t i = 0; i < node->num_edges;++i)
+    for(int i = 0; i < node->num_edges;++i)
     {
         listNeighbors[i] = node->edges[i].to_node;
         printf("GRAPH : neighbor index %d",listNeighbors[i]->index);

@@ -1,7 +1,7 @@
 #pragma once
 #include <stddef.h>
 
-typedef struct node_t
+typedef struct node_t 
 {
     int index;
     int data;

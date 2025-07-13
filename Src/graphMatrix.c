@@ -81,7 +81,7 @@ void graphMatrix_set_edge(graphMatrix_t *graphMatrix, node_t *from_node,
   }
 }
 
-float graphMatrix_calc_path_cost(graphMatrix_t *graphMatrix) 
+/* float graphMatrix_calc_path_cost(graphMatrix_t *graphMatrix) 
 { 
     
     return 0.0f; 
@@ -91,7 +91,7 @@ graphMatrix_t *graphMatrix_copy(graphMatrix_t *graphMatrix)
 { 
     
     return NULL; 
-}
+} */
 
 void graphMatrix_draw(graphMatrix_t *graphMatrix) 
 {
@@ -107,8 +107,10 @@ void graphMatrix_draw(graphMatrix_t *graphMatrix)
 
     for (int i = 0; i < n; ++i) {
         printf("%2d |", i);
-        for (int j = 0; j < n; ++j) {
-            printf("%3.0f", graphMatrix->connections[i][j]);
+        for (int j = 0; j < n; ++j) 
+        {
+          edge_t* temp_edge = graphMatrix->connections[i][j];
+          printf("%3.0f", temp_edge->weight);
         }
         printf("\n");
     }

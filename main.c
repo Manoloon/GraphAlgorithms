@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Src/node.h"
+#include "node.h"
+#include "algo_bfs.h"
 #include "Src/graph.h"
 #include "Src/graphMatrix.h"
+
 
 // int argc,char* argv[]
 int main() 
@@ -26,5 +28,7 @@ int main()
     graphMatrix_init(&gMatrix,13,true);
     graphMatrix_draw(&gMatrix);
     graphMatrix_destroy(&gMatrix);
+
+    bfs_test();
     return 0;
 }
