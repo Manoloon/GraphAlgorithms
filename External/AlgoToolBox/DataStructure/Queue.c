@@ -46,7 +46,7 @@ queue_t *queue_create_fixed()
         return NULL;
     }
     q->capacity = INITIAL_CAPACITY;
-    q->data = malloc(sizeof(int)*INITIAL_CAPACITY);
+    q->data = malloc(sizeof(void*)*INITIAL_CAPACITY);
     if(q->data == NULL)
     {
         fprintf(stderr,"Create queue : failed to allocate memory for data\n");
@@ -76,7 +76,7 @@ void queue_push(queue_t *q, void* val) {
   if (q->size == q->capacity) 
   {
     size_t new_capacity = q->capacity * 2;
-    int *new_data = realloc(q->data, sizeof(int) * new_capacity);
+    void** new_data = realloc(q->data, sizeof(void*) * new_capacity);
     if (new_data == NULL) {
       fprintf(stderr, "queue_push : realloc failed\n");
       return;
@@ -114,7 +114,7 @@ void* queue_peek(queue_t *q)
     if(queue_is_empty(q))
     {
         fprintf(stderr,"queue_peek : queue is empty");
-        return -1;
+        return NULL;
     }
     return q->data[q->front];
 }
@@ -148,17 +148,20 @@ void queue_test()
     */
     queue_t* q = queue_create(10);
     //queue_free_func(q,free_str);
+    int val1 = 10;
+    int val2 = 20;
+    int val3 = 30;
+    int val4 = 40;
+    queue_push(q, &val1);
+    queue_push(q, &val2);
+    queue_push(q, &val3);
 
-    queue_push(q, 10);
-    queue_push(q, 20);
-    queue_push(q, 30);
-
-    printf("Queue : Front: %d\n", queue_peek(q)); // 10
+    printf("Queue : Front: %d\n",queue_peek(q)); // 10
 
     printf("Queue : Dequeued: %d\n", queue_pop(q)); // 10
     printf("Queue : Dequeued: %d\n", queue_pop(q)); // 20
 
-    queue_push(q, 40);
+    queue_push(q, &val4);
 
     printf("Queue : Front: %d\n", queue_peek(q)); // 30
 

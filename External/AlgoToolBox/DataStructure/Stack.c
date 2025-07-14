@@ -35,7 +35,7 @@ stack_t *stack_create(int capacity)
 
 void *stack_peek(stack_t *stack) 
 { 
-    if(stack->top == -1) return NULL;
+    if(stack->top == 0) return NULL;
     stack->top--;
     return stack->items[stack->top];
 }
@@ -70,7 +70,7 @@ void stack_push(stack_t *stack, void *item)
         if(!stack->items)
         {
             fprintf(stderr, "stack_push : Memory allocation failed for stack expansion\n");
-            return NULL;
+            return;
         }
         stack->items = new_items;
         stack->size = new_size;
@@ -82,22 +82,22 @@ void stack_push(stack_t *stack, void *item)
 void stack_test() 
 {
     printf("Stack \n");
-    stack_t* s = create_stack(3);
+    stack_t* s = stack_create(3);
     int node1 = 10;
     int node2 = 20;
     int node3 = 30;
     int node4 = 40;
-    push(s, &node1);
+    stack_push(s, &node1);
     printf("stack : Push: %d\n", stack_peek(s)); // 10
-    push(s, &node2);
+    stack_push(s, &node2);
     printf("stack : Push: %d\n", stack_peek(s)); // 10
-    push(s, &node3);
+    stack_push(s, &node3);
     printf("stack : Push: %d\n", stack_peek(s)); // 10    
 
     printf("stack pop: %d\n", stack_pop(s)); // 10
     printf("stack pop: %d\n", stack_pop(s)); // 20
 
-    push(s, &node4);
+    stack_push(s, &node4);
     printf("stack : Push: %d\n", stack_peek(s)); // 30
 
     while (!stack_is_empty(s)) {

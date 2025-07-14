@@ -7,14 +7,12 @@ add_compile_options(-std=c11 -Wall -Wextra -Wpedantic -Wshadow)
 # Set source directory
 set(SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Src")
 
-add_subdirectory(Src)
+add_subdirectory(External/AlgoToolBox)
 
 # Create the executable with main.c and src's sources
-add_executable(GraphAlgorithm main.c ${SRC_SOURCES} ${ALGO_SOURCES} ${DS_SOURCES})
+add_executable(GraphAlgorithm main.c 
+                Src/graph.c 
+                Src/graphMatrix.c 
+                Src/node.c)
 
-# Add include directories
-target_include_directories(GraphAlgorithm PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Algo
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/DataStructure
-)
+target_link_libraries(GraphAlgorithm PRIVATE AlgoToolBox)
