@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "node.h"
-#include "algo_bfs.h"
+#include "Src/node.h"
+#include "Src/Algo/algo_bfs.h"
 #include "Src/graph.h"
 #include "Src/graphMatrix.h"
 
@@ -24,11 +24,12 @@ int main()
     node_destroy(new_node1);
     node_destroy(new_node2);
     // graph matrix
+    /*
     graphMatrix_t gMatrix;
     graphMatrix_init(&gMatrix,13,true);
     graphMatrix_draw(&gMatrix);
     graphMatrix_destroy(&gMatrix);
-
+*/
     bfs_test();
     return 0;
 }

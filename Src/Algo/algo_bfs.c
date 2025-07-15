@@ -1,6 +1,6 @@
 #include "algo_dfs.h"
 #include "algo_bfs.h"
-#include "Src/DataStructure/Queue.h"
+#include "Queue.h"
 #include "graph.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -31,21 +31,21 @@ int *bfs(graph_t *graph, int start)
         last[i] = -1;
     }
     queue_t* pending = queue_create(50);
-    queue_push(pending,start);
+    queue_push(pending,&start);
     seen[start] = true;
     while(queue_is_empty(pending) == false)
     {
-        int index = queue_pop(pending);
+        int index = *(int*)queue_pop(pending);
         
         node_t* current = &graph->nodes[index];
         edge_t* curr_edges = node_get_edges(current);
         int num_edges = node_get_num_edges(current);
         for(int i = 0; i < num_edges; ++i)
         {
-            int neighbor = curr_edges[i].to_node;
+            int neighbor = *(int*)curr_edges[i].to_node;
             if(seen[neighbor] == false)
             {
-                queue_push(pending,neighbor);
+                queue_push(pending,&neighbor);
                 seen[neighbor] = true;
                 last[neighbor] = index;
             }
@@ -57,7 +57,8 @@ int *bfs(graph_t *graph, int start)
 
 void bfs_test() 
 {
-    graph_t* g = malloc(sizeof(graph_t));
+    graph_t* g = graph_create(4,true);
+    
     graph_insert_edge(g,0,1,1.0f);
     graph_insert_edge(g,1,2,1.0f);
     graph_insert_edge(g,2,3,1.0f);

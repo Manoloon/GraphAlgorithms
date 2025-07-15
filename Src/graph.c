@@ -2,20 +2,36 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-edge_t *graph_get_edge(graph_t *graph, int from_node, int to_node) 
-{
-    if(from_node < 0 || from_node >= graph->num_nodes)
+graph_t *graph_create(int num_nodes,bool undirected) 
+{ 
+    graph_t* g = malloc(sizeof(graph_t));
+    if(g == NULL)
     {
-        fprintf(stderr,"graph_get_edge : from_node out of bound\n");
+        fprintf(stderr, "graph_create : failed to alloc\n");
         exit(EXIT_FAILURE);
     }
-    if(to_node < 0 || to_node >= graph->num_nodes)
+    g->num_nodes = num_nodes;
+    g->undirected = undirected;
+    g->nodes = malloc(num_nodes * sizeof(node_t));
+    for(int i = 0; i < num_nodes;++i)
     {
-        fprintf(stderr,"graph_get_edge : to_node out of bound\n");
-        exit(EXIT_FAILURE);
+        g->nodes[i].index = i;
+        g->nodes[i].edges = NULL;
     }
+    return g; 
+}
 
-    return node_get_edge(&graph->nodes[from_node],to_node);
+edge_t *graph_get_edge(graph_t *graph, int from_node, int to_node) {
+  if (from_node < 0 || from_node >= graph->num_nodes) {
+    fprintf(stderr, "graph_get_edge : from_node out of bound\n");
+    exit(EXIT_FAILURE);
+  }
+  if (to_node < 0 || to_node >= graph->num_nodes) {
+    fprintf(stderr, "graph_get_edge : to_node out of bound\n");
+    exit(EXIT_FAILURE);
+  }
+
+  return node_get_edge(&graph->nodes[from_node], to_node);
 }
 
 bool graph_is_edge(node_t *from_node, node_t *to_node) 

@@ -1,26 +1,75 @@
-#include <algo_dfs.h>
+#include "algo_dfs.h"
+#include "Stack.h"
 #include <stdlib.h>
 #include <stdio.h>
 
-void dfs_recursive_basic(graph_t *graph, int index, bool *seen) 
+int *dfs(graph_t *graph, int start) 
 {
-    seen[index] = true;
-    node_t* current = &graph->nodes[index];
-    edge_t* current_edges = node_get_edges(current);
-    int current_num_edges = node_get_num_edges(current);
-    for(int i = 0; i < current_num_edges;++i)
+    if(graph == NULL || start < 0 || start >= graph->num_nodes)
     {
-        int neighbor = current_edges[i].to_node->index;
-        if (seen[neighbor] != NULL)
+        fprintf(stderr, "dfs : invalid graph or start index\n");
+        return NULL;
+    }
+    int num_nodes = graph->num_nodes;
+    bool* seen = calloc(num_nodes,sizeof(bool));
+    if(seen == NULL) 
+    {
+        fprintf(stderr,"dfs : failed to allocate memory for seen list\n");
+        exit(EXIT_FAILURE);
+    }
+    int* last = calloc(num_nodes,sizeof(int));
+    if(last == NULL) 
+    {
+        fprintf(stderr,"dfs : failed to allocate memory for last list\n");
+        exit(EXIT_FAILURE);
+    }
+    for(int i = 0; i< num_nodes;++i)
+    {
+        last[i] = -1;
+    }
+    stack_t* to_explore = stack_create(50);
+    stack_push(to_explore,&start);
+    while (!stack_is_empty(to_explore))
+    {
+        int index = *(int*)stack_pop(to_explore);
+        if(seen[index]==false)
         {
-            fprintf(stderr,"dfs_recursive_basic : Neighbor in Seen is out of bound\n");
-            exit(EXIT_FAILURE);
-        }
-        if(seen[neighbor] == false)
-        {
-            dfs_recursive_basic(graph,index,seen);
+            node_t* current = &graph->nodes[index];
+            seen[index] = true;
+            edge_t* all_edges = node_get_sorted_edges(current);
+            int num_edges = node_get_num_edges(current);
+            //TODO reverse all edges
+            for(int i = 0; i < num_edges;++i)
+            {
+                int neighbor = *(int*)all_edges[i].to_node;
+                if(seen[neighbor]==false)
+                {
+                    last[neighbor] = index;
+                    stack_push(to_explore,&neighbor);
+                }
+            }
         }
     }
+    stack_destroy(to_explore);
+    return last; 
+}
+/*
+void dfs_recursive_basic(graph_t *graph, int index, bool *seen) {
+  seen[index] = true;
+  node_t *current = &graph->nodes[index];
+  edge_t *current_edges = node_get_edges(current);
+  int current_num_edges = node_get_num_edges(current);
+  for (int i = 0; i < current_num_edges; ++i) {
+    int neighbor = current_edges[i].to_node->index;
+    if (seen[neighbor] != NULL) {
+      fprintf(stderr,
+              "dfs_recursive_basic : Neighbor in Seen is out of bound\n");
+      exit(EXIT_FAILURE);
+    }
+    if (seen[neighbor] == false) {
+      dfs_recursive_basic(graph, index, seen);
+    }
+  }
 }
 
 void dfs_basic(graph_t *graph, int start) 
@@ -63,7 +112,7 @@ void dfs_recursive_path(graph_t *graph, int index, bool *seen, bool *last)
     int num_edges = node_get_num_edges(current);
     for(int i = 0; i < num_edges;++i)
     {
-        int neighbor = current_edges[i].to_node;
+        int neighbor = *(int*)current_edges[i].to_node;
         if(seen[neighbor] == false)
         {
             last[neighbor] = index;
@@ -96,7 +145,7 @@ int* dfs_path(graph_t *graph)
     {
         if(seen[i] == false)
         {
-            dfs_recursive_path(graph,i,seen,last);
+            dfs_recursive_path(graph,i,seen,(bool*)last);
         }
     }
     free(seen);
@@ -111,7 +160,7 @@ void dfs_recursive_cc(graph_t *graph, int index, int *components,int current_com
     int num_edges = node_get_num_edges(current_node);
     for(int i = 0; i < num_edges;++i)
     {
-        int neighbor = current_edges[i].to_node;
+        int neighbor = *(int*)current_edges[i].to_node;
         if(components[neighbor] == -1)
         {
             dfs_recursive_cc(graph,neighbor,components,current_comp);
@@ -143,3 +192,4 @@ int *dfs_connected_components(graph_t *graph)
     }
     return components; 
 }
+*/

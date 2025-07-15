@@ -110,7 +110,10 @@ void graphMatrix_draw(graphMatrix_t *graphMatrix)
         for (int j = 0; j < n; ++j) 
         {
           edge_t* temp_edge = graphMatrix->connections[i][j];
-          printf("%3.0f", temp_edge->weight);
+          if(temp_edge != NULL)
+          {
+              printf("%3.0f", temp_edge->weight);
+          }
         }
         printf("\n");
     }

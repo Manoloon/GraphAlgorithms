@@ -3,10 +3,12 @@
 /*
 Depth First Search Algorithm (LIFO)
 */
-#include "Src/node.h"
-#include "Src/graph.h"
+#include "node.h"
+#include "graph.h"
 
-void dfs_recursive_basic(graph_t* graph,int index,bool* seen);
+int* dfs(graph_t* graph, int start);
+
+/* void dfs_recursive_basic(graph_t* graph,int index,bool* seen);
 // API
 void dfs_basic(graph_t* graph,int start);
 // API
@@ -19,7 +21,7 @@ int* dfs_path(graph_t* graph);
 // Connected Components
 void dfs_recursive_cc(graph_t* graph,int index,int* components,int current_comp);
 // API : NEED TO FREE Components
-int* dfs_connected_components(graph_t* graph);
+int* dfs_connected_components(graph_t* graph); */
 
 
 

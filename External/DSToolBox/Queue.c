@@ -156,17 +156,17 @@ void queue_test()
     queue_push(q, &val2);
     queue_push(q, &val3);
 
-    printf("Queue : Front: %d\n",queue_peek(q)); // 10
+    printf("Queue : Front: %d\n",*(int*)queue_peek(q)); // 10
 
-    printf("Queue : Dequeued: %d\n", queue_pop(q)); // 10
-    printf("Queue : Dequeued: %d\n", queue_pop(q)); // 20
+    printf("Queue : Dequeued: %d\n", *(int*)queue_pop(q)); // 10
+    printf("Queue : Dequeued: %d\n", *(int*)queue_pop(q)); // 20
 
     queue_push(q, &val4);
 
-    printf("Queue : Front: %d\n", queue_peek(q)); // 30
+    printf("Queue : Front: %d\n", *(int*)queue_peek(q)); // 30
 
     while (!queue_is_empty(q)) {
-        printf("Queue : Dequeued: %d\n", queue_pop(q));
+        printf("Queue : Dequeued: %d\n", *(int*)queue_pop(q));
         // if using free_func
         // free(str);
     }
