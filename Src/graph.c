@@ -16,7 +16,10 @@ graph_t *graph_create(int num_nodes,bool undirected)
     for(int i = 0; i < num_nodes;++i)
     {
         g->nodes[i].index = i;
+        g->nodes[i].data = i;
         g->nodes[i].edges = NULL;
+        g->nodes[i].num_edges = 0;
+        g->nodes[i].edge_capacity = 0;
     }
     return g; 
 }
@@ -69,6 +72,11 @@ edge_t *graph_make_edgeList(graph_t *graph)
 
 void graph_insert_edge(graph_t *graph, int from_node, int to_node,float weight) 
 {
+    if(graph == NULL)
+    {
+        fprintf(stderr,"graph_insert_edge : graph is NULL\n");
+        exit(EXIT_FAILURE);
+    }
     if(from_node < 0 || from_node >= graph->num_nodes)
     {
         fprintf(stderr,"graph_insert_edge : from_node out of bound\n");

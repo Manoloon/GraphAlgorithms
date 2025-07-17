@@ -6,7 +6,8 @@
 
 size_t node_get_num_edges(node_t *node) 
 { 
-    return node ? node->num_edges : 0; 
+    if(node == NULL) return 0;
+    return node->num_edges > 0 ? node->num_edges : 0; 
 }
 //TODO
 edge_t *node_get_edge(node_t *from_node, int neighbor) 
@@ -39,7 +40,9 @@ void node_add_edge(node_t *target, node_t *new_node, float weight)
     edge_t new_edge = {.to_node = new_node,
                         .from_node = target,
                         .weight = weight};
-    target->edges[target->num_edges++] = new_edge;
+    target->edges[target->num_edges] = new_edge;
+    target->num_edges +=1;
+    printf("num_edges %d:\n",target->num_edges);
 }
 
 void node_remove_edge(node_t *target, node_t *to_remove) 
@@ -51,8 +54,9 @@ void node_remove_edge(node_t *target, node_t *to_remove)
         if(target->edges[n].to_node == to_remove)
         {
             // move last edge into this slot
-            target->edges[n] = target->edges[target->num_edges - 1];
-            target->num_edges--;
+            target->edges[n] = target->edges[target->num_edges-1];
+            target->num_edges-= 1;
+            printf("remove : num_edges %d:\n",target->num_edges);
         }
         else
         {

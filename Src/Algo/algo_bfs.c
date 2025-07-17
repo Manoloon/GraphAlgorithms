@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int *bfs(graph_t *graph, int start) 
 { 
@@ -42,7 +43,7 @@ int *bfs(graph_t *graph, int start)
         int num_edges = node_get_num_edges(current);
         for(int i = 0; i < num_edges; ++i)
         {
-            int neighbor = *(int*)curr_edges[i].to_node;
+            int neighbor = curr_edges[i].to_node->index;
             if(seen[neighbor] == false)
             {
                 queue_push(pending,&neighbor);
@@ -57,12 +58,17 @@ int *bfs(graph_t *graph, int start)
 
 void bfs_test() 
 {
-    graph_t* g = graph_create(4,true);
-    
-    graph_insert_edge(g,0,1,1.0f);
-    graph_insert_edge(g,1,2,1.0f);
-    graph_insert_edge(g,2,3,1.0f);
-    graph_insert_edge(g,3,4,1.0f);
+    int num_nodes = 100;
+    time_t current_time;
+    struct tm *local_time;
+    time(&current_time);
+    local_time = localtime(&current_time);
+    printf("BFS Test Starting at %02d:%02d:%02d\n",local_time->tm_hour,local_time->tm_min,local_time->tm_sec);
+    graph_t* g = graph_create(num_nodes,true);
+    for(int i = 0; i < num_nodes-1;++i)
+    {
+        graph_insert_edge(g,i,i+1,1.0f);
+    }
 
     int* last = bfs(g,0);
 
@@ -70,6 +76,9 @@ void bfs_test()
     for (int i = 0; i < g->num_nodes; ++i) {
         printf("last[%d] = %d\n", i, last[i]);
     }
-    free(last);
+    if(last != NULL)
+    {
+        free(last);
+    }
     free(g);
 }
