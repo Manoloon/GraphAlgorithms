@@ -43,8 +43,7 @@ void *stack_peek(stack_t *stack)
 void *stack_pop(stack_t *stack) 
 { 
     if(stack_is_empty(stack)) return NULL;
-    stack->top--;
-    return stack->items[stack->top];
+    return stack->items[stack->top--];
 }
 
 bool stack_is_empty(const stack_t *s) 
@@ -88,20 +87,20 @@ void stack_test()
     int node3 = 30;
     int node4 = 40;
     stack_push(s, &node1);
-    printf("stack : Push: %d\n", stack_peek(s)); // 10
+    printf("stack : Push: %d\n", *(int*)stack_peek(s)); // 10
     stack_push(s, &node2);
-    printf("stack : Push: %d\n", stack_peek(s)); // 10
+    printf("stack : Push: %d\n", *(int*)stack_peek(s)); // 10
     stack_push(s, &node3);
-    printf("stack : Push: %d\n", stack_peek(s)); // 10    
+    printf("stack : Push: %d\n", *(int*)stack_peek(s)); // 10    
 
-    printf("stack pop: %d\n", stack_pop(s)); // 10
-    printf("stack pop: %d\n", stack_pop(s)); // 20
+    printf("stack pop: %d\n", *(int*)stack_pop(s)); // 10
+    printf("stack pop: %d\n", *(int*)stack_pop(s)); // 20
 
     stack_push(s, &node4);
-    printf("stack : Push: %d\n", stack_peek(s)); // 30
+    printf("stack : Push: %d\n", *(int*)stack_peek(s)); // 30
 
     while (!stack_is_empty(s)) {
-        printf("stack pop: %d\n", stack_pop(s));
+        printf("stack pop: %d\n", *(int*)stack_pop(s));
     }
     stack_destroy(s);
 }

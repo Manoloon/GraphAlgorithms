@@ -58,24 +58,27 @@ int *bfs(graph_t *graph, int start)
 
 void bfs_test() 
 {
-    int num_nodes = 100;
-    time_t current_time;
-    struct tm *local_time;
-    time(&current_time);
-    local_time = localtime(&current_time);
-    printf("BFS Test Starting at %02d:%02d:%02d\n",local_time->tm_hour,local_time->tm_min,local_time->tm_sec);
+    int num_nodes = 2000;
+
+    printf("BFS Test Start\n");
+    clock_t start = clock();
     graph_t* g = graph_create(num_nodes,true);
+    
     for(int i = 0; i < num_nodes-1;++i)
     {
         graph_insert_edge(g,i,i+1,1.0f);
     }
 
     int* last = bfs(g,0);
-
+    clock_t end = clock();
+    double elapsed_seconds = difftime(end,start);
     printf("last[] from BFS starting at node 0:\n");
+    /*
     for (int i = 0; i < g->num_nodes; ++i) {
-        printf("last[%d] = %d\n", i, last[i]);
+        printf("last[%d] = %d, ", i, last[i]);
     }
+    printf("\n");*/
+    printf("BFS Test elapsed: %.6f seconds\n",elapsed_seconds);
     if(last != NULL)
     {
         free(last);

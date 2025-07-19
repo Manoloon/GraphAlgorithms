@@ -67,24 +67,26 @@ int *dfs(graph_t *graph, int start)
 }
 void dfs_test() 
 {
-    time_t current_time;
-    struct tm *local_time;
-    time(&current_time);
-    local_time = localtime(&current_time);
-    printf("DFS Test Starting at %02d:%02d:%02d\n",local_time->tm_hour,local_time->tm_min,local_time->tm_sec);
-    graph_t* g = graph_create(5,true);
+    int num_nodes = 2000;
 
-    graph_insert_edge(g,0,1,1.0f);
-    graph_insert_edge(g,1,2,1.0f);
-    graph_insert_edge(g,2,3,1.0f);
-    graph_insert_edge(g,3,4,1.0f);
-
-    int* last = dfs(g,0);
-
-    printf("last[] from DFS starting at node 0:\n");
-    for (int i = 0; i < g->num_nodes; ++i) {
-        printf("last[%d] = %d\n", i, last[i]);
+    printf("DFS Test Start\n");
+    clock_t start = clock();
+    graph_t* g = graph_create(num_nodes,true);
+   
+    for(int i = 0; i < num_nodes-1;++i)
+    {
+        graph_insert_edge(g,i,i+1,1.0f);
     }
+    int* last = dfs(g,0);
+    clock_t end = clock();
+    double elapsed_seconds = difftime(end,start);
+    printf("last[] from DFS starting at node 0:\n");
+    /*
+    for (int i = 0; i < g->num_nodes; ++i) {
+        printf("last[%d] = %d, ", i, last[i]);
+    }
+    printf("\n");*/
+    printf("DFS Test elapsed: %.6f seconds\n",elapsed_seconds);
     if(last != NULL)
     {
         free(last);

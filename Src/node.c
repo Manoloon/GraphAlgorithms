@@ -42,7 +42,6 @@ void node_add_edge(node_t *target, node_t *new_node, float weight)
                         .weight = weight};
     target->edges[target->num_edges] = new_edge;
     target->num_edges +=1;
-    printf("num_edges %d:\n",target->num_edges);
 }
 
 void node_remove_edge(node_t *target, node_t *to_remove) 
