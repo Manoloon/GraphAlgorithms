@@ -1,5 +1,5 @@
 # Graph 
-Breadth First Search
-Depth first Search
+ + Breadth First Search (FIFO): Queue
+ + Depth first Search (LIFO) : Stack
 
 
