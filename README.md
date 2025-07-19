@@ -1,4 +1,5 @@
-# Learning C 
-node_t
-edge_t
+# Graph 
+Breadth First Search
+Depth first Search
+
 
