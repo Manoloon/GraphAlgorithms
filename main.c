@@ -3,6 +3,7 @@
 #include "Src/node.h"
 #include "Src/Algo/algo_bfs.h"
 #include "Src/Algo/algo_dfs.h"
+#include "BinarySearchT.h"
 #include "Src/graph.h"
 #include "Src/graphMatrix.h"
 
@@ -31,7 +32,8 @@ int main()
     graphMatrix_draw(&gMatrix);
     graphMatrix_destroy(&gMatrix);
 */
-    bfs_test();
-    dfs_test();
+   // bfs_test();
+   // dfs_test();
+    bst_test();
     return 0;
 }

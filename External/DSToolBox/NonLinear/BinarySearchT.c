@@ -53,16 +53,54 @@ DSNode_t *bst_search(DSNode_t *root, int target)
     }
 }
 
-void bst_delete(DSNode_t *root, int target) 
+DSNode_t* bst_delete(DSNode_t *root, int target) 
 {
     DSNode_t* result = bst_search(root,target);
     if(result == NULL)
     {
         fprintf(stderr,"bst_delete : item not found in tree\n");
-        return;
+        return NULL;
     }
-    // TODO : continue deletion
-}
+
+    if(target < root->data)
+        root->left = bst_delete(root->left,target);
+    else if (target > root->data)
+        root->right = bst_delete(root->right,target);
+    else
+    {
+        /*Node has no children (leaf node)
+            Just delete the node.*/
+        if(root->left == NULL && root->right == NULL)
+        {
+            free(root);
+            return NULL;
+        }
+        /*Node has one child
+            Replace the node with its single child.*/
+        else if (root->left == NULL)
+        {
+            DSNode_t* temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if (root->right == NULL)
+        {
+            DSNode_t* temp = root->left;
+            free(root);
+            return temp;
+        }
+        /* Node has two children
+            Find the in-order successor (smallest node in right subtree),
+            copy its value to the current node, and delete the in-order successor.*/
+        else
+        {
+            DSNode_t* successor = bst_find_minimum(root->right);
+            root->data = successor->data;
+            root->right = bst_delete(root->right,successor->data);
+        }
+    }
+    return root;
+}   
 
 int bst_height(DSNode_t *tree) 
 { 
@@ -94,6 +132,15 @@ void bst_fill_ordered(DSNode_t *tree, int* data, size_t *index)
     bst_fill_ordered(tree->left,data,index);
     data[(*index)++] = tree->data;
     bst_fill_ordered(tree->right,data,index);
+}
+
+DSNode_t *bst_find_minimum(DSNode_t *node) 
+{ 
+    while (node->left != NULL)
+    {
+        node = node->left;
+    }
+    return node; 
 }
 
 int *bst_sorted_data(DSNode_t *tree) 
