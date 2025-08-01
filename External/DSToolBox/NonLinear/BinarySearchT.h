@@ -17,5 +17,9 @@ DSNode_t* bst_find_minimum(DSNode_t* node);
 int* bst_sorted_data(DSNode_t* tree);
 void bst_destroy(DSNode_t *tree);
 
+// console test 
 void bst_print(DSNode_t* tree,int depth);
-void bst_test();
+void bst_console_test();
+// fancy raylib test
+void bst_draw_node(DSNode_t* node, int x, int y, int offsetX);
+void bst_raylib_test(bool bSorted);

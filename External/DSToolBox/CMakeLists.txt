@@ -8,4 +8,6 @@ target_include_directories(DSToolBox PUBLIC
                     ${CMAKE_CURRENT_SOURCE_DIR}/NonLinear
                     ${CMAKE_CURRENT_SOURCE_DIR}/Advanced
                     ${CMAKE_CURRENT_SOURCE_DIR}/HashBased
-                    ${CMAKE_CURRENT_SOURCE_DIR})        
+                    ${CMAKE_CURRENT_SOURCE_DIR})
+find_package(raylib REQUIRED)
+target_link_libraries(DSToolBox PRIVATE raylib)

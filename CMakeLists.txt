@@ -4,7 +4,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 add_compile_options(-std=c11 -Wall -Wextra -Wpedantic -Wshadow)
-
+find_package(raylib REQUIRED)
 add_subdirectory(External/DSToolBox)
 # Source files
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Src)
@@ -22,3 +22,4 @@ target_include_directories(GraphAlgorithm PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Src
 )
 target_link_libraries(GraphAlgorithm PRIVATE DSToolBox)
+target_link_libraries(GraphAlgorithm PRIVATE raylib)

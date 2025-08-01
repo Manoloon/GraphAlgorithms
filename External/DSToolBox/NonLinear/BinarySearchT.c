@@ -1,12 +1,18 @@
 #include "BinarySearchT.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <raylib.h>
 
-DSNode_t *bst_create(int* data, size_t tree_lenght) 
+#define NODE_WIDTH 30
+#define NODE_HEIGHT 30
+#define H_SPACING 50
+#define V_SPACING 60
+
+DSNode_t *bst_create(int* data, size_t tree_length) 
 { 
-    if(data == NULL || tree_lenght == 0) return NULL;
+    if(data == NULL || tree_length == 0) return NULL;
     DSNode_t* root = NULL;
-    for(size_t i = 0; i < tree_lenght;++i)
+    for(size_t i = 0; i < tree_length;++i)
     {
         root = bst_insert(root,data[i]);
     }
@@ -175,7 +181,7 @@ void bst_print(DSNode_t *tree, int depth)
     bst_print(tree->left, depth + 1);
 }
 
-void bst_test() {
+void bst_console_test() {
   int values[] = {5, 3, 7, 2, 4, 6, 8};
   size_t length = sizeof(values) / sizeof(values[0]);
 
@@ -199,4 +205,59 @@ void bst_test() {
   printf("Search for %d: %s\n", search_value, found ? "Found" : "Not found");
 
   bst_destroy(tree);
+}
+
+void bst_draw_node(DSNode_t *node, int x, int y, int offsetX)
+{
+    if(!node) return;
+    int halfWidth = NODE_WIDTH/2;
+    int halfHeight = NODE_HEIGHT/2;
+    DrawRectangle(x-halfWidth,y - halfHeight,NODE_WIDTH,NODE_HEIGHT,DARKGREEN);
+    DrawRectangleLines(x - halfWidth, y - halfHeight, NODE_WIDTH,NODE_HEIGHT,GREEN);
+
+    char buffer[8];
+    snprintf(buffer,sizeof(buffer),"%d",node->data);
+    DrawText(buffer,x - MeasureText(buffer,10),y -5,10,GREEN);
+
+    if(node->left)
+    {
+        int childX = x - offsetX;
+        int childY = y + V_SPACING;
+        DrawLine(x,y+halfHeight,childX,childY,ORANGE);
+        bst_draw_node(node->left,childX,childY,offsetX/2);
+    }
+
+    if(node->right)
+    {
+        int childX = x + offsetX;
+        int childY = y + V_SPACING;
+        DrawLine(x,y+halfHeight,childX,childY,GREEN);
+        bst_draw_node(node->right,childX,childY,offsetX/2);
+    }
+    
+}
+
+void bst_raylib_test(bool bSorted)
+{
+    int values[] = {5,3,2,1,10,24,500,7,8,9,4,6,8};
+    size_t len = sizeof(values) / sizeof(values[0]);
+    DSNode_t *tree = bst_create(values, len);
+    if(bSorted)
+    {
+        // sort tree 
+    }
+    InitWindow(640,480,"Binary Search Tree");
+    SetTargetFPS(60);
+    /*
+        LOOP
+    */
+   while (!WindowShouldClose())
+   {
+        BeginDrawing();
+        ClearBackground(BLACK);
+        bst_draw_node(tree,GetScreenWidth()/2,60,90);
+        EndDrawing();
+   }
+   bst_destroy(tree);
+   CloseWindow();
 }
