@@ -4,6 +4,7 @@
 #include "Src/Algo/algo_bfs.h"
 #include "Src/Algo/algo_dfs.h"
 #include "BinarySearchT.h"
+#include "DDA.h"
 #include "Src/graph.h"
 #include "Src/graphMatrix.h"
 
@@ -11,8 +12,8 @@
 int main() 
 {
     // BST test
-    bst_raylib_test(true);
-   
+    //bst_raylib_test(true);
+    DDA_test();
     // graph matrix
     /*
     graphMatrix_t gMatrix;

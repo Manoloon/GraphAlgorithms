@@ -9,6 +9,7 @@
         "span": "c",
         "functional": "c",
         "tuple": "c",
-        "variant": "c"
+        "variant": "c",
+        "vector2d.h": "c"
     }
 }

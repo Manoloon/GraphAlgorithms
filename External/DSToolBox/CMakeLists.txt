@@ -1,9 +1,11 @@
 add_library(DSToolBox
             Linear/Queue.c
             Linear/Stack.c
-            NonLinear/BinarySearchT.c)
+            NonLinear/BinarySearchT.c
+            NonLinear/DDA.c)
 # Optionally expose its headers
 target_include_directories(DSToolBox PUBLIC 
+                    ${CMAKE_CURRENT_SOURCE_DIR}/Basics
                     ${CMAKE_CURRENT_SOURCE_DIR}/Linear
                     ${CMAKE_CURRENT_SOURCE_DIR}/NonLinear
                     ${CMAKE_CURRENT_SOURCE_DIR}/Advanced
