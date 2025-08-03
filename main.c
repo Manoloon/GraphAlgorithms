@@ -23,6 +23,6 @@ int main()
 */
    // bfs_test();
    // dfs_test();
-    bst_console_test();
+    //bst_console_test();
     return 0;
 }

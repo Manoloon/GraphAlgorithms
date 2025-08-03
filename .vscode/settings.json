@@ -10,6 +10,7 @@
         "functional": "c",
         "tuple": "c",
         "variant": "c",
-        "vector2d.h": "c"
+        "vector2d.h": "c",
+        "cmath": "c"
     }
 }
