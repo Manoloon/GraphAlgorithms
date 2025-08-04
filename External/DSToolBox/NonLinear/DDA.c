@@ -5,26 +5,47 @@
     Digital Differencial Analyzer
 */
 
-#define MAPSIZE_X 32
-#define MAPSIZE_Y 30
+#define NUMCELLS_X 32
+#define NUMCELLS_Y 30
 #define CELLSIZE 16
+#define PLAYER_SPEED 0.05
 
-void DDA_update(float DeltaTime,vec2f Player)
+void DDA_update(float DeltaTime)
 {
+    static vec2f Player = {0,0};
     vec2f MousePos = {GetMousePosition().x,GetMousePosition().y};
     vec2f MouseCell = {MousePos.x / CELLSIZE,MousePos.y / CELLSIZE};
-    static int VecMap[MAPSIZE_X][MAPSIZE_Y];
+    static int VecMap[NUMCELLS_X][NUMCELLS_Y];
 
-    // definir input para mover el player con el mouse 
+    // definir input para mover el player con AWSD
+    if(IsKeyDown(KEY_W))
+    {
+        Player.y -= PLAYER_SPEED * DeltaTime;
+    }
+    else if (IsKeyDown(KEY_S))
+    {
+        Player.y += PLAYER_SPEED * DeltaTime;
+    }
+    if(IsKeyDown(KEY_A))
+    {
+        Player.x -= PLAYER_SPEED * DeltaTime;
+    }
+    else if (IsKeyDown(KEY_D))
+    {
+        Player.x += PLAYER_SPEED * DeltaTime;
+    }
     // definir input para crear solidos en el mundo con el click izq;
-
+    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) // Mouse is being click)
+    {
+        //TODO : opcion a borrar la pared si ya existe
+        VecMap[(int)MouseCell.x][(int)MouseCell.y] = 1;
+    }
     // DDA
     vec2f RayStart = Player;
     vec2f dir = {MouseCell.x - Player.x,MouseCell.y - Player.y};
     vec2f RayDir = vec2f_normalize(dir);
- 
-    vec2f RayUnitStepSize = { (RayDir.x == 0) ? 1e30f : sqrt(1+(RayDir.y / RayDir.x)*(RayDir.y/RayDir.x)),
-                              (RayDir.y == 0)? 1e30f : sqrt(1+(RayDir.x/RayDir.y)*(RayDir.x/RayDir.y))};
+    vec2f RayUnitStepSize = {sqrt(1+(RayDir.y / RayDir.x)*(RayDir.y/RayDir.x)),
+                            sqrt(1+(RayDir.x/RayDir.y)*(RayDir.x/RayDir.y))};
     
     vec2i MapCheck = to_vec2i(RayStart);
     vec2f RayLength1D;
@@ -38,7 +59,7 @@ void DDA_update(float DeltaTime,vec2f Player)
     else
     {
         Step.x = 1;
-        RayLength1D.x = ((RayStart.x + 1) - RayStart.x) * RayUnitStepSize.x;
+        RayLength1D.x = ((MapCheck.x + 1) - RayStart.x) * RayUnitStepSize.x;
     }
 
     if(RayDir.y < 0)
@@ -49,7 +70,7 @@ void DDA_update(float DeltaTime,vec2f Player)
     else
     {
         Step.y = 1;
-        RayLength1D.y = ((RayStart.y + 1) - RayStart.y) * RayUnitStepSize.y;
+        RayLength1D.y = ((MapCheck.y + 1) - RayStart.y) * RayUnitStepSize.y;
     }
 
     // walk until collision or range check
@@ -75,7 +96,7 @@ void DDA_update(float DeltaTime,vec2f Player)
        }
 
        // test tile at new test point
-       if(MapCheck.x >= 0 && MapCheck.x < MAPSIZE_X && MapCheck.y >= 0 && MapCheck.y < MAPSIZE_Y)
+       if(MapCheck.x >= 0 && MapCheck.x < NUMCELLS_X && MapCheck.y >= 0 && MapCheck.y < NUMCELLS_Y)
        {
         // if(VecMap[MapCheck.y * MAPSIZE_X + MapCheck.x] == 1)
             if(VecMap[MapCheck.x][MapCheck.y] == 1)
@@ -92,29 +113,23 @@ void DDA_update(float DeltaTime,vec2f Player)
 
     ClearBackground(BLACK);
     // Draw map
-    for(int y = 0; y < MAPSIZE_Y;++y)
+    for(int y = 0; y < NUMCELLS_Y;++y)
     {
-        for(int x = 0; x < MAPSIZE_X;++x)
+        for(int x = 0; x < NUMCELLS_X;++x)
         {
             if(VecMap[x][y] == 1)
             {
                 DrawRectangle(x * CELLSIZE,y * CELLSIZE,CELLSIZE,CELLSIZE,BLUE);
             }
             else
+            {
                 DrawRectangleLines(x * CELLSIZE,y * CELLSIZE,CELLSIZE,CELLSIZE,DARKGRAY);
-        }
-    }
-    // create a solid tile
-    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) // Mouse is being click)
-    {
-        if(MouseCell.x >= 0 && MouseCell.x < MAPSIZE_X && MouseCell.y >= 0 && MouseCell.y < MAPSIZE_Y)
-        {
-            VecMap[(int)MouseCell.x][(int)MouseCell.y] = (VecMap[(int)MouseCell.x][(int)MouseCell.y] == 0) ?  1 : 0;
+            }
         }
     }
 
        // rayCast
-        DrawLine(Player.x * CELLSIZE , Player.y * CELLSIZE, MousePos.x * CELLSIZE,MousePos.y * CELLSIZE,WHITE); // 0xF0F0F0F0 intermitent
+        DrawLine(Player.x * CELLSIZE , Player.y * CELLSIZE, MousePos.x,MousePos.y,WHITE); // 0xF0F0F0F0 intermitent
             
         if(bTileFound)
         {
@@ -130,12 +145,12 @@ void DDA_test()
 {
     InitWindow(640,480,"DDA Test");
     SetTargetFPS(60);
-    vec2f loc_player = {100,100};
 
     while (!WindowShouldClose())
     {
+        double DeltaTime = GetTime();
         BeginDrawing();
-        DDA_update(1.0f,loc_player);
+        DDA_update(DeltaTime);
         EndDrawing();
     }
     CloseWindow();    
