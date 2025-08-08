@@ -15,6 +15,7 @@ set(SOURCES
     ${SRC_DIR}/node.c
     ${ALGO_DIR}/algo_bfs.c
     ${ALGO_DIR}/algo_dfs.c
+    ${ALGO_DIR}/algo_dijsktra.c
 )
 # Create the executable with main.c and src's sources
 add_executable(GraphAlgorithm main.c ${SOURCES})
