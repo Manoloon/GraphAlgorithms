@@ -1,5 +1,5 @@
 add_library(DSToolBox
-            Linear/Queue.c
+            Linear/SimpleQueue.c
             Linear/Stack.c
             Linear/PriorityQueue.c
             NonLinear/BinarySearchT.c
