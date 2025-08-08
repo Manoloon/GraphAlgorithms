@@ -11,6 +11,7 @@
         "tuple": "c",
         "variant": "c",
         "vector2d.h": "c",
-        "cmath": "c"
+        "cmath": "c",
+        "simplequeue.h": "c"
     }
 }

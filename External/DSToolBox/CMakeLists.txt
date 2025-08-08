@@ -1,6 +1,7 @@
 add_library(DSToolBox
             Linear/Queue.c
             Linear/Stack.c
+            Linear/PriorityQueue.c
             NonLinear/BinarySearchT.c
             NonLinear/DDA.c)
 # Optionally expose its headers
