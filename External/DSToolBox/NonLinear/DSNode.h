@@ -10,3 +10,11 @@ struct DSNode_t
     DSNode_t* left;
     DSNode_t* right;
 };
+
+typedef struct WeightedNode_t WeightedNode_t;
+
+struct WeightedNode_t
+{
+    float weight;
+    int data;
+};

@@ -5,15 +5,17 @@
 #include "Src/Algo/algo_dfs.h"
 #include "BinarySearchT.h"
 #include "DDA.h"
+#include "Heap.h"
 #include "Src/graph.h"
 #include "Src/graphMatrix.h"
 
 // int argc,char* argv[]
 int main() 
 {
+    heap_consoleTest(true);
     // BST test
     //bst_raylib_test(true);
-    DDA_test();
+    //DDA_test();
     // graph matrix
     /*
     graphMatrix_t gMatrix;

@@ -3,8 +3,8 @@
 
 int * shortest_path_DKT(graph_t * graph, int startIndex)
 {
-    int* cost = graph->nodes; // iniciar todos con infinito
-    int* last = graph->nodes; // iniciar a todos con -1
+    //int* cost = graph->nodes; // iniciar todos con infinito
+    //int* last = graph->nodes; // iniciar a todos con -1
     /*
     priorityQueue pq = minHeap;
     pq.enqueue(startIndex,0.0);
@@ -33,5 +33,5 @@ int * shortest_path_DKT(graph_t * graph, int startIndex)
         }
     }
     */
-return last;
+return NULL; //last;
 }

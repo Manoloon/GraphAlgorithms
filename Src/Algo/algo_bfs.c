@@ -1,6 +1,6 @@
 #include "algo_dfs.h"
 #include "algo_bfs.h"
-#include "Queue.h"
+#include "SimpleQueue.h"
 #include "graph.h"
 #include <stdbool.h>
 #include <stdio.h>
