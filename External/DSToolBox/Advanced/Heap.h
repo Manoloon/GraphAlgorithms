@@ -24,7 +24,7 @@ void heap_bubble_down(heap_t* heap,int index);
 // return if heap is min type or false if its max type
 bool heap_is_min(heap_t* heap);
 bool heap_is_empty(heap_t* heap);
-void heap_swapItems(void* a,void* b);
+void heap_swapItems(WeightedNode_t* a,WeightedNode_t* b);
 // get number of items in heap
 int heap_get_size(heap_t* heap);
 

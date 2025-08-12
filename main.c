@@ -13,6 +13,8 @@
 int main() 
 {
     heap_consoleTest(true);
+    
+    heap_consoleTest(false);
     // BST test
     //bst_raylib_test(true);
     //DDA_test();
