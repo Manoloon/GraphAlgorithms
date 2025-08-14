@@ -4,7 +4,7 @@ extern "C"
 {
     #include "../Src/graph.h"
 }
-TEST(GraphTests,CerateBasicGraph)
+TEST(GraphTests,CreateBasicGraph)
 {
     int num_nodes = 10;
     bool undirected = true;
