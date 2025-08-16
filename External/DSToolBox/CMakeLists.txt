@@ -17,6 +17,10 @@ find_package(raylib REQUIRED)
 target_link_libraries(DSToolBox PRIVATE raylib)
 # test
 find_package(GTest REQUIRED)
-add_executable(DSToolBoxTests Tests/Linear/Test_SimpleQueue.cpp ${SOURCES})
+set(TEST_SOURCES
+            Tests/Linear/Test_SimpleQueue.cpp
+            Tests/Advanced/Test_Heap.cpp
+            )
+add_executable(DSToolBoxTests ${TEST_SOURCES} ${SOURCES})
 target_include_directories(DSToolBoxTests PRIVATE ${SOURCES})
 target_link_libraries(DSToolBoxTests PRIVATE DSToolBox raylib GTest::gtest_main)
