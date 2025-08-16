@@ -187,26 +187,62 @@ void heap_print(heap_t *heap)
     printf("\n");
 }
 
-void heap_consoleTest(bool heap_is_min)
+void heap_print_file(heap_t *heap, FILE *file_out)
 {
+    for(size_t i = 0; i < heap->size;++i)
+    {
+        fprintf(file_out,"(%.1f,%d) ",heap->items[i].weight,heap->items[i].data);
+    }
+    fprintf(file_out,"\n");
+}
+
+void heap_consoleTest(bool heap_is_min,const char* input_file,const char* output_file)
+{
+    FILE* file_in = fopen(input_file,"r");
+    FILE* file_out = fopen(output_file,"w");
+
+    if(!file_in || !file_out)
+    {
+        perror("file open failed");
+        if(file_in) fclose(file_in);
+        if(file_out) fclose(file_out);
+        return;
+    }
+    char buffer[256]; // one line
+    int capacity = 0;
+    while(fgets(buffer,sizeof(buffer),file_in))
+    {
+        capacity++;
+    }
+    if(capacity < 1)
+    {
+        perror("no data to parse");
+        fclose(file_in);
+        fclose(file_out);
+        return;
+    }
+    // reset file pointer so we can read it again
+    rewind(file_in);
+    printf("Capacity is: %d\n",capacity);
     heap_t* current_heap;
     if(heap_is_min)
     {
         printf("Creating Min heap\n");
-        current_heap = heap_create_min(10);
+        current_heap = heap_create_min(capacity);
     }
     else
     {
         printf("Creating Max heap\n");
-        current_heap = heap_create_max(10);
+        current_heap = heap_create_max(capacity);
     }
-    
-    heap_insert(current_heap, (WeightedNode_t){0.1, 10});
-    heap_insert(current_heap, (WeightedNode_t){0.7, 70});
-    heap_insert(current_heap, (WeightedNode_t){0.4, 30});
-    heap_insert(current_heap, (WeightedNode_t){1.0, 100});
-    heap_insert(current_heap, (WeightedNode_t){1.9, 190});
-    heap_insert(current_heap, (WeightedNode_t){0.2, 20});
+    // get data from file into nodes
+    float weight;
+    int data;
+    while(fscanf(file_in,"%f %d",&weight,&data)==2)
+    {
+        printf("scanning file : w: %f, d: %d\n",weight,data);
+        heap_insert(current_heap,(WeightedNode_t){weight,data});
+    }
 
     printf("Heap is %s: ",(heap_is_min)?"Min\n":"Max\n");
     heap_print(current_heap);
@@ -220,6 +256,10 @@ void heap_consoleTest(bool heap_is_min)
     printf("Extracted Node: (%.g, %d)\n", curr_node2.weight, curr_node2.data);
     printf("Heap after extraction: ");
     heap_print(current_heap);
+    heap_print_file(current_heap,file_out);
+
+    fclose(file_in);
+    fclose(file_out);
 
     free(current_heap->items);
     free(current_heap);

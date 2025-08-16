@@ -1,6 +1,7 @@
 #pragma once 
 #include "DSNode.h"
 #include <stddef.h>
+#include <stdio.h>
 #include <stdbool.h>
 /*
     Heaps : Min and Max Heap 
@@ -29,4 +30,5 @@ void heap_swapItems(WeightedNode_t* a,WeightedNode_t* b);
 int heap_get_size(heap_t* heap);
 
 void heap_print(heap_t* heap);
-void heap_consoleTest(bool heap_is_min);
+void heap_print_file(heap_t* heap,FILE* file_out);
+void heap_consoleTest(bool heap_is_min,const char* input_file,const char* output_file);

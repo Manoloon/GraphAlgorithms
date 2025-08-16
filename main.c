@@ -9,12 +9,20 @@
 #include "Src/graph.h"
 #include "Src/graphMatrix.h"
 
+
+
 // int argc,char* argv[]
-int main() 
+int main(int argc, char* argv[]) 
 {
-    heap_consoleTest(true);
-    
-    heap_consoleTest(false);
+    if(argc < 3)
+    {
+        printf("usage %s <input_file> <output_file>\n",argv[0]);
+        return 1;
+    }
+    //argv[1] = input file , argv[2] = output file
+    heap_consoleTest(true,argv[1],argv[2]);
+    printf("\n");
+    heap_consoleTest(false,argv[1],argv[2]);
     // BST test
     //bst_raylib_test(true);
     //DDA_test();
